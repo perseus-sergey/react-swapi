@@ -1,0 +1,31 @@
+.card {
+  width: 17rem;
+  height: 25rem;
+  border: 1px solid #b8b8b8;
+  border-radius: 7px;
+  padding: 1rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
+  line-height: 2;
+  border-bottom: 2px groove #ababab;
+}
+
+.card-info-wrapper {
+  display: flex;
+  gap: 2rem;
+  padding-top: 1rem;
+  align-items: center;
+}
+
+.card-image {
+  width: 50%;
+  height: fit-content;
+  background-color: #e7e7e7;
+}
+
+.card-description {
+  display: block;
+  padding: 0.5rem;
+}

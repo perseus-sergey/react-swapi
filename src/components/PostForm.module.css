@@ -1,0 +1,20 @@
+.postFormFieldset {
+  display: flex;
+  flex-direction: column;
+  align-content: center;
+  margin: 0 auto;
+  min-width: 300px;
+  gap: 1rem;
+  text-align: left;
+  padding: 1.5rem 1rem;
+  border: 1px solid darkgray;
+  border-radius: 0.5rem;
+  flex-wrap: wrap;
+  width: fit-content;
+}
+
+.postFormLegend {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  color: darkgray;
+}
