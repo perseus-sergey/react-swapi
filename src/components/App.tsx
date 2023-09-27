@@ -1,14 +1,13 @@
 import { Component } from 'react';
-import { ICardData } from '../types';
+import { SEARCH_MIN_LENGTH } from '../commons/constants';
+import { ICardData, IFilter } from '../types';
 import './App.css';
 import CardFilter from './CardFilter';
 import CardList from './CardList';
 import PostForm from './PostForm';
 
-export interface IAppState {
-  filter: { sort: string; query: string };
-  cards: ICardData[];
-}
+// TODO: clean form after creating card
+// TODO: clean search button
 
 class App extends Component {
   state = {
@@ -28,19 +27,21 @@ class App extends Component {
       <>
         <PostForm createCardCallback={this.createCardCallback} />
 
-        <CardFilter filter={this.state.filter} setFilter={this.setState} />
+        <CardFilter filter={this.state.filter} setFilter={this.setFilter.bind(this)} />
 
         <CardList
           removeCardCallback={this.removeCardCallback}
-          // cards={searchedAdnSortedCards}
-          cards={this.state.cards}
+          cards={this.searchedAndSortedCards()}
           cardListTitle={'Result List'}
         />
       </>
     );
   }
 
-  // createCardCallback = (newCard: ICardData) => setCards([...cards, newCard]);
+  setFilter(filter: IFilter) {
+    this.setState({ ...this.state, filter: filter });
+  }
+
   createCardCallback = (newCard: ICardData) =>
     this.setState({ ...this.state, cards: [...this.state.cards, newCard] });
 
@@ -59,9 +60,11 @@ class App extends Component {
   };
 
   searchedAndSortedCards = () => {
-    return this.sortedCards().filter((card) =>
-      card.title.toLowerCase().includes(this.state.filter.query)
-    );
+    return this.state.filter.query.length < SEARCH_MIN_LENGTH
+      ? this.sortedCards()
+      : this.sortedCards().filter((card) =>
+          card.title.toLowerCase().includes(this.state.filter.query)
+        );
   };
 
   // shouldComponentUpdate(nextProps: IAppState, nextState: IAppState) {

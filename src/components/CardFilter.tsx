@@ -1,18 +1,13 @@
+import { IFilter } from '../types';
 import StyledInput from './UI/input/StyledInput';
 import Select from './UI/select/Select';
 
-const CardFilter = ({
-  filter,
-  setFilter,
-}: {
+const CardFilter = (props: {
   filter: { sort: string; query: string };
-  setFilter: React.Dispatch<
-    React.SetStateAction<{
-      sort: string;
-      query: string;
-    }>
-  >;
+  setFilter: (filter: IFilter) => void;
 }) => {
+  const { filter, setFilter } = props;
+
   return (
     <div>
       <StyledInput

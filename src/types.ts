@@ -10,6 +10,16 @@ export interface ISelect {
   value: keyof ICardData;
 }
 
+export interface IFilter {
+  sort: string;
+  query: string;
+}
+
+export interface IAppState {
+  filter: IFilter;
+  cards: ICardData[];
+}
+
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   buttonType: ButtonType;
   children?: React.ReactNode;
