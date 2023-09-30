@@ -1,82 +1,103 @@
 import { Component } from 'react';
-import { SEARCH_MIN_LENGTH } from '../commons/constants';
-import { ICardData, IFilter } from '../types';
+import { getPosts, searchPosts } from '../API/PostService';
+import { CARD_DRAFT, SEARCH_MIN_LENGTH } from '../commons/constants';
 import './App.css';
 import CardFilter from './CardFilter';
 import CardList from './CardList';
-import PostForm from './PostForm';
-
-// TODO: clean form after creating card
-// TODO: clean search button
+// import { useFetching } from './useFetching';
 
 class App extends Component {
   state = {
-    filter: { sort: '', query: '' },
-    cards: ['First', 'Second', 'Third', 'Fourth'].map((cardTitle, i) => {
-      return {
-        id: `card-${Date.now()}-${i}`,
-        title: `${cardTitle} Card`,
-        imgSource: 'image-source',
-        description: `${cardTitle} description`,
-      };
-    }),
+    query: '',
+    cards: [CARD_DRAFT],
+    isWrongInputSearch: false,
   };
+
+  // private fetchPosts: () => Promise<void>;
+  // private isPostLoading: boolean;
+  // private errorLoadingPosts: string;
+
+  constructor(props: string) {
+    super(props);
+
+    // const fetching = new useFetching({
+    //   callback: async () => {
+    //     this.setState({ ...this.state, cards: await getPosts() });
+    //   },
+    // });
+
+    // const fetchingState = fetching.getState();
+
+    // this.fetchPosts = fetchingState.fetching;
+    // this.isPostLoading = fetchingState.isLoading;
+    // this.errorLoadingPosts = fetchingState.error;
+  }
+
+  // componentDidMount(): void {
+  //   const fetching = new useFetching({
+  //     callback: async () => {
+  //       this.setState({ ...this.state, cards: await getPosts() });
+  //     },
+  //   });
+
+  //   const fetchingState = fetching.getState();
+
+  //   this.fetchPosts = fetchingState.fetching;
+  //   this.isPostLoading = fetchingState.isLoading;
+  //   this.errorLoadingPosts = fetchingState.error;
+
+  //   this.fetchPosts();
+  // }
+
+  componentDidMount(): void {
+    this.fetchPosts(getPosts);
+  }
+
+  async fetchPosts(fetchFunction: () => Promise<void>) {
+    try {
+      this.setState({ ...this.state, isLoading: true });
+      const cards = await fetchFunction();
+      this.setState({ ...this.state, cards: cards });
+      // await this.props.callback();
+    } catch (e) {
+      const error = e as Error;
+      this.setState({ ...this.state, error: error.message });
+    } finally {
+      this.setState({ ...this.state, isLoading: false });
+    }
+  }
 
   render() {
     return (
       <>
-        <PostForm createCardCallback={this.createCardCallback} />
-
-        <CardFilter filter={this.state.filter} setFilter={this.setFilter.bind(this)} />
-
-        <CardList
-          removeCardCallback={this.removeCardCallback}
-          cards={this.searchedAndSortedCards()}
-          cardListTitle={'Result List'}
+        <CardFilter
+          query={this.state.query}
+          setQuery={this.setQuery.bind(this)}
+          submitSearch={this.submitSearch.bind(this)}
+          isWrangInput={this.state.isWrongInputSearch}
         />
+
+        <CardList cards={this.state.cards} cardListTitle={'Planets List'} />
       </>
     );
   }
 
-  setFilter(filter: IFilter) {
-    this.setState({ ...this.state, filter: filter });
+  setQuery(query: string) {
+    this.setState({ ...this.state, query: query });
   }
 
-  createCardCallback = (newCard: ICardData) =>
-    this.setState({ ...this.state, cards: [...this.state.cards, newCard] });
+  async submitSearch() {
+    if (!this.ifSearchWrong()) this.fetchPosts(await searchPosts(this.state.query));
+  }
 
-  removeCardCallback = (removedCard: ICardData) =>
-    this.setState({
-      ...this.state,
-      cards: this.state.cards.filter((card) => card.id !== removedCard.id),
-    });
-
-  sortedCards = () => {
-    const sortField = this.state.filter.sort as keyof ICardData;
-
-    return this.state.filter.sort
-      ? [...this.state.cards].sort((a, b) => a[sortField].localeCompare(b[sortField]))
-      : this.state.cards;
-  };
-
-  searchedAndSortedCards = () => {
-    return this.state.filter.query.length < SEARCH_MIN_LENGTH
-      ? this.sortedCards()
-      : this.sortedCards().filter((card) =>
-          card.title.toLowerCase().includes(this.state.filter.query)
-        );
-  };
-
-  // shouldComponentUpdate(nextProps: IAppState, nextState: IAppState) {
-  //   if (
-  //     nextState.filter.sort === this.state.filter.sort &&
-  //     nextState.cards === this.state.cards &&
-  //     nextState.filter.query === this.state.filter.query
-  //   ) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
+  ifSearchWrong() {
+    if (this.state.query.length < SEARCH_MIN_LENGTH) {
+      this.setState({ ...this.state, isWrongInputSearch: true });
+      return true;
+    }
+    this.setState({ ...this.state, isWrongInputSearch: false });
+    return false;
+  }
 }
 
 export default App;

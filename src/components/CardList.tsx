@@ -5,7 +5,6 @@ import Card from './Card';
 class CardList extends Component {
   constructor(
     public props: {
-      removeCardCallback: (removedCard: ICardData) => void;
       cards: ICardData[];
       cardListTitle: string;
     }
@@ -14,24 +13,19 @@ class CardList extends Component {
   }
 
   render() {
-    const { removeCardCallback, cards, cardListTitle } = this.props;
-    return cards.length ? (
+    const { cards, cardListTitle } = this.props;
+    return cards.length && cards[0].name ? (
       <>
         <h1 style={{ textAlign: 'center' }}>{cardListTitle}</h1>
         <div className="cards-wrapper">
           {cards.map((card: ICardData, indx) => (
-            <Card
-              removeCardCallback={removeCardCallback}
-              index={indx + 1}
-              key={card.id}
-              cardData={card}
-            />
+            <Card index={indx + 1} key={card.name} cardData={card} />
           ))}
         </div>
       </>
     ) : (
       <>
-        <h1 style={{ textAlign: 'center' }}>Results not found 👀 🤷</h1>
+        <h1 style={{ textAlign: 'center' }}>Planets not found 👀 🤷</h1>
       </>
     );
   }

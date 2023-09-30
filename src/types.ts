@@ -1,23 +1,12 @@
 export interface ICardData {
-  id: string;
-  title: string;
-  description: string;
-  imgSource: string;
-}
-
-export interface ISelect {
   name: string;
-  value: keyof ICardData;
-}
-
-export interface IFilter {
-  sort: string;
-  query: string;
-}
-
-export interface IAppState {
-  filter: IFilter;
-  cards: ICardData[];
+  climate: string;
+  diameter: string;
+  gravity: string;
+  population: string;
+  rotation_period: string;
+  orbital_period: string;
+  terrain: string;
 }
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -27,7 +16,8 @@ export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
 };
 
 export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
-  icon?: React.ReactNode;
+  badMessage: string;
+  isWrang: boolean;
 };
 
 export type ButtonType = 'delete' | 'submit' | 'cancel';

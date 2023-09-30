@@ -1,29 +1,11 @@
 import { Component } from 'react';
+import { bigNumberCommaSeparate } from '../commons/utils';
 import { ICardData } from '../types';
 import './Card.css';
-import StyledButton from './UI/button/StyledButton';
 
-// type Props = {};
-
-// type State = {};
-
-// class ClassCounter extends Component<Props, State> {
 class Card extends Component {
-  // state = {
-  //   count: 0,
-  // };
-
-  // increment() {
-  //   this.setState({ count: this.state.count + 1 });
-  // }
-
-  // decrement() {
-  //   this.setState({ count: this.state.count - 1 });
-  // }
-
   constructor(
     public props: {
-      removeCardCallback: (removedCard: ICardData) => void;
       cardData: ICardData;
       index: number;
     }
@@ -32,20 +14,55 @@ class Card extends Component {
   }
 
   render() {
-    const { removeCardCallback, cardData, index } = this.props;
-    const { title, imgSource, description } = cardData;
+    const { cardData, index } = this.props;
+    const {
+      name,
+      rotation_period,
+      diameter,
+      gravity,
+      population,
+      orbital_period,
+      terrain,
+      climate,
+    } = cardData;
+
     return (
       <div className="card">
-        <h2 className="card-title">
-          {index}. {title}
-        </h2>
-        <div className="card-info-wrapper">
-          <div className="card-image">{imgSource}</div>
-          <div className="card-description">{description}</div>
-          <StyledButton
-            buttonType="delete"
-            onClick={() => removeCardCallback(cardData)}
-          ></StyledButton>
+        <div className="title-block">
+          <h2 className="card-title">
+            {index}. {name}
+          </h2>
+          <div className="planet"></div>
+        </div>
+        <div className="card-description">
+          <div className="card-description-item">
+            <span>Diameter:</span>
+            {bigNumberCommaSeparate(diameter)} km
+          </div>
+          <div className="card-description-item">
+            <span>Population:</span>
+            {bigNumberCommaSeparate(population)}
+          </div>
+          <div className="card-description-item">
+            <span>Climate:</span>
+            {bigNumberCommaSeparate(climate)}
+          </div>
+          <div className="card-description-item">
+            <span>Rotate period:</span>
+            {rotation_period} h
+          </div>
+          <div className="card-description-item">
+            <span>Orbital period:</span>
+            {orbital_period} d
+          </div>
+          <div className="card-description-item">
+            <span>Terrain:</span>
+            {terrain}
+          </div>
+          <div className="card-description-item">
+            <span>Gravity:</span>
+            {gravity}
+          </div>
         </div>
       </div>
     );
