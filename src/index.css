@@ -21,6 +21,15 @@
   transition: all 0.1s;
 }
 
+/*
+*************************
+Remove scrollbar
+*************************
+*/
+::-webkit-scrollbar {
+  width: 0;
+}
+
 body {
   margin: 0;
   display: flex;

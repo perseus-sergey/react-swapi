@@ -5,6 +5,8 @@ import { storageGetQuery, storageSetQuery } from '../commons/utils';
 import './App.css';
 import CardFilter from './CardFilter';
 import CardList from './CardList';
+import FooterStyled from './footerStyled';
+import HeaderStyled from './HeaderStyled';
 import Loader from './UI/loader/Loader';
 
 class App extends Component {
@@ -68,21 +70,25 @@ class App extends Component {
   render() {
     return (
       <>
-        <CardFilter
-          query={this.state.query}
-          setQuery={this.setQuery.bind(this)}
-          submitSearch={this.submitSearch.bind(this)}
-          isWrangInput={this.state.isWrongInputSearch}
-        />
+        <HeaderStyled />
+        <main>
+          <CardFilter
+            query={this.state.query}
+            setQuery={this.setQuery.bind(this)}
+            submitSearch={this.submitSearch.bind(this)}
+            isWrangInput={this.state.isWrongInputSearch}
+          />
 
-        {this.errorMessage ? <h4>Error loading: {this.errorMessage}</h4> : ''}
-        {this.postsCount ? <h4>Results: {this.postsCount}</h4> : ''}
+          {this.errorMessage ? <h4>Error loading: {this.errorMessage}</h4> : ''}
+          {this.postsCount ? <h4>Results: {this.postsCount}</h4> : ''}
 
-        {this.state.isLoading ? (
-          <Loader />
-        ) : (
-          <CardList cards={this.cards} cardListTitle={'Planets List'} />
-        )}
+          {this.state.isLoading ? (
+            <Loader />
+          ) : (
+            <CardList cards={this.cards} cardListTitle={'Planets List'} />
+          )}
+        </main>
+        <FooterStyled />
       </>
     );
   }
