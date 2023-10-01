@@ -1,13 +1,21 @@
 import axios from 'axios';
+import { storageGetQuery } from '../commons/utils';
+import { IGetPosts } from '../types';
 
 const BASE_URL = 'https://swapi.dev/api/';
 
-export const getPosts = async () => {
+export const getPosts = async (): Promise<IGetPosts> => {
+  const storageQuery = storageGetQuery();
+  if (storageQuery) {
+    return searchPosts(storageQuery);
+  }
   const response = await axios.get(`${BASE_URL}planets`);
-  return response.data.results;
+  return { posts: response.data.results, postsCount: response.data.count };
 };
 
-export const searchPosts = async (value: string) => {
+export const searchPosts = async (value: string): Promise<IGetPosts> => {
+  if (!value) return getPosts();
+
   const response = await axios.get(`${BASE_URL}planets/?search=${value}`);
-  return response.data.results;
+  return { posts: response.data.results, postsCount: response.data.count };
 };

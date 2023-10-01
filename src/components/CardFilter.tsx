@@ -20,6 +20,7 @@ const CardFilter = (props: {
   const inputChanged = (e: ChangeEvent<HTMLInputElement>) => {
     const inputEl = e.target as HTMLInputElement;
     if (!inputEl) return;
+
     setQuery(inputEl.value);
   };
 

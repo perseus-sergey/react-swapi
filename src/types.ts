@@ -9,6 +9,11 @@ export interface ICardData {
   terrain: string;
 }
 
+export interface IGetPosts {
+  posts: ICardData[];
+  postsCount: number;
+}
+
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
   buttonType: ButtonType;
   children?: React.ReactNode;

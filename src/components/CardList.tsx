@@ -14,7 +14,7 @@ class CardList extends Component {
 
   render() {
     const { cards, cardListTitle } = this.props;
-    return cards.length && cards[0].name ? (
+    return cards && cards.length && cards[0].name ? (
       <>
         <h1 style={{ textAlign: 'center' }}>{cardListTitle}</h1>
         <div className="cards-wrapper">

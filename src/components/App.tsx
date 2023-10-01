@@ -1,70 +1,68 @@
 import { Component } from 'react';
 import { getPosts, searchPosts } from '../API/PostService';
 import { CARD_DRAFT, SEARCH_MIN_LENGTH } from '../commons/constants';
+import { storageGetQuery, storageSetQuery } from '../commons/utils';
 import './App.css';
 import CardFilter from './CardFilter';
 import CardList from './CardList';
-// import { useFetching } from './useFetching';
+import Loader from './UI/loader/Loader';
 
 class App extends Component {
   state = {
     query: '',
-    cards: [CARD_DRAFT],
+    // cards: [CARD_DRAFT],
     isWrongInputSearch: false,
+    // error: '',
+    isLoading: false,
   };
 
-  // private fetchPosts: () => Promise<void>;
-  // private isPostLoading: boolean;
-  // private errorLoadingPosts: string;
+  private errorMessage = '';
+  private postsCount = 0;
+  private cards = [CARD_DRAFT];
 
-  constructor(props: string) {
-    super(props);
-
-    // const fetching = new useFetching({
-    //   callback: async () => {
-    //     this.setState({ ...this.state, cards: await getPosts() });
-    //   },
-    // });
-
-    // const fetchingState = fetching.getState();
-
-    // this.fetchPosts = fetchingState.fetching;
-    // this.isPostLoading = fetchingState.isLoading;
-    // this.errorLoadingPosts = fetchingState.error;
+  componentDidMount() {
+    this.fetchPosts();
   }
 
-  // componentDidMount(): void {
-  //   const fetching = new useFetching({
-  //     callback: async () => {
-  //       this.setState({ ...this.state, cards: await getPosts() });
-  //     },
-  //   });
+  async submitSearch() {
+    if (this.isSearchWrong()) {
+      this.setState({ ...this.state, isWrongInputSearch: true });
+      return;
+    }
 
-  //   const fetchingState = fetching.getState();
-
-  //   this.fetchPosts = fetchingState.fetching;
-  //   this.isPostLoading = fetchingState.isLoading;
-  //   this.errorLoadingPosts = fetchingState.error;
-
-  //   this.fetchPosts();
-  // }
-
-  componentDidMount(): void {
-    this.fetchPosts(getPosts);
+    this.fetchPosts(this.state.query);
   }
 
-  async fetchPosts(fetchFunction: () => Promise<void>) {
+  async fetchPosts(query = '') {
+    this.postsCount = 0;
+
     try {
-      this.setState({ ...this.state, isLoading: true });
-      const cards = await fetchFunction();
-      this.setState({ ...this.state, cards: cards });
-      // await this.props.callback();
+      this.setState({
+        // cards: await fetchFunction(),
+        isLoading: true,
+        isWrongInputSearch: false,
+        query: storageGetQuery() || '',
+      });
+      const result = query ? await searchPosts(query) : await getPosts();
+      this.cards = result.posts;
+      this.postsCount = result.postsCount;
     } catch (e) {
       const error = e as Error;
-      this.setState({ ...this.state, error: error.message });
+      // this.setState({ ...this.state, error: error.message });
+      this.errorMessage = error.message;
     } finally {
       this.setState({ ...this.state, isLoading: false });
     }
+  }
+
+  setQuery(query: string) {
+    storageSetQuery(query);
+
+    this.setState({ ...this.state, query: query });
+  }
+
+  isSearchWrong() {
+    return this.state.query.length < SEARCH_MIN_LENGTH;
   }
 
   render() {
@@ -77,26 +75,16 @@ class App extends Component {
           isWrangInput={this.state.isWrongInputSearch}
         />
 
-        <CardList cards={this.state.cards} cardListTitle={'Planets List'} />
+        {this.errorMessage ? <h4>Error loading: {this.errorMessage}</h4> : ''}
+        {this.postsCount ? <h4>Results: {this.postsCount}</h4> : ''}
+
+        {this.state.isLoading ? (
+          <Loader />
+        ) : (
+          <CardList cards={this.cards} cardListTitle={'Planets List'} />
+        )}
       </>
     );
-  }
-
-  setQuery(query: string) {
-    this.setState({ ...this.state, query: query });
-  }
-
-  async submitSearch() {
-    if (!this.ifSearchWrong()) this.fetchPosts(await searchPosts(this.state.query));
-  }
-
-  ifSearchWrong() {
-    if (this.state.query.length < SEARCH_MIN_LENGTH) {
-      this.setState({ ...this.state, isWrongInputSearch: true });
-      return true;
-    }
-    this.setState({ ...this.state, isWrongInputSearch: false });
-    return false;
   }
 }
 
