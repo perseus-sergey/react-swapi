@@ -1,6 +1,6 @@
 # React Components RS-School task
 
-# React + TypeScript + Vite + Eslint + Prettier + Husky + FontAwesome
+# React + TypeScript + Vite + Eslint + Prettier + Husky + FontAwesome ✨
 
 ### Install all dependencies (node_modules)
 
@@ -10,7 +10,7 @@
 
 ---
 
-### Scripts
+### Scripts 🔨
 
 For running the project use this commands in terminal:
 
@@ -51,13 +51,3 @@ yarn fix
 ```
 yarn lint
 ```
-
-"dev": "vite --host",
-"build": "tsc && vite build",
-"deploy": "yarn build && gh-pages -d dist -e ",
-"lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-"fix": "prettier --fix",
-"format": "prettier --write \"src/\*_/_.{ts,tsx,css}\"",
-"preview": "vite preview",
-"precommit": "lint-staged",
-"prepare": "husky install"
