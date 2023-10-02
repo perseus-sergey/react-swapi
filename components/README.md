@@ -1,6 +1,8 @@
 # React Components RS-School task
 
-# React + TypeScript + Vite + Eslint + Prettier + Husky + FontAwesome ✨
+## React + TypeScript + Vite + Eslint + Prettier + Husky + FontAwesome ✨
+
+ ## A RESTfull api was picked from Star Wars api-service https://swapi.dev/api 🔗
 
 ### Install all dependencies (node_modules)
 
