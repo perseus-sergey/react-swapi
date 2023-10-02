@@ -8,8 +8,10 @@
 
 .errorMessage {
   visibility: hidden;
-  color: red;
+  color: #ffeded;
   font-size: 0.8rem;
+  text-shadow: 1px 1px 0 red;
+  font-weight: 600;
 }
 
 .errorMessage.active {

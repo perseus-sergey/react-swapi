@@ -5,7 +5,7 @@ import { storageGetQuery, storageSetQuery } from '../commons/utils';
 import './App.css';
 import CardFilter from './CardFilter';
 import CardList from './CardList';
-import FooterStyled from './footerStyled';
+import FooterStyled from './FooterStyled';
 import HeaderStyled from './HeaderStyled';
 import Loader from './UI/loader/Loader';
 

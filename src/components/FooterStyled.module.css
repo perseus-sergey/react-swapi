@@ -2,7 +2,7 @@ footer {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background: linear-gradient(to top, #909090, transparent);
+  background: linear-gradient(to top, #000000, transparent);
   padding: 0.5rem 1rem;
 }
 

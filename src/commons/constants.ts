@@ -8,7 +8,7 @@ export const constantsLinks = {
   RSS_IMG_PATH: './assets/images/rs-school.png',
 };
 export const constantsTexts = {
-  LOGO_TEXT: 'Task Name',
+  LOGO_TEXT: 'Components',
   SWU_IMG_ALT: 'Stand With Ukraine',
   RSS_IMG_ALT: 'Rss School reference',
   COPYRIGHT_TEXT: 'Created 2023',

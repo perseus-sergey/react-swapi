@@ -12,6 +12,7 @@ export interface ICardData {
 export interface IGetPosts {
   posts: ICardData[];
   postsCount: number;
+  nextPage: string;
 }
 
 export type ButtonProps = React.ButtonHTMLAttributes<HTMLButtonElement> & {
