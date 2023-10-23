@@ -7,20 +7,17 @@ import CardFilter from './CardFilter';
 import CardList from './CardList';
 import FooterStyled from './FooterStyled';
 import HeaderStyled from './HeaderStyled';
-import Loader from './UI/loader/Loader';
+import { Loader } from './UI/loader/Loader';
 
 class App extends Component {
   state = {
     query: '',
-    // cards: [CARD_DRAFT],
+    cards: [CARD_DRAFT],
+    postsCount: 0,
     isWrongInputSearch: false,
-    // error: '',
+    error: '',
     isLoading: false,
   };
-
-  private errorMessage = '';
-  private postsCount = 0;
-  private cards = [CARD_DRAFT];
 
   componentDidMount() {
     this.fetchPosts();
@@ -28,7 +25,7 @@ class App extends Component {
 
   async submitSearch() {
     if (this.isSearchWrong()) {
-      this.setState({ ...this.state, isWrongInputSearch: true });
+      this.setState((prevState) => ({ ...prevState, isWrongInputSearch: true }));
       return;
     }
 
@@ -36,31 +33,31 @@ class App extends Component {
   }
 
   async fetchPosts(query = '') {
-    this.postsCount = 0;
-
     try {
-      this.setState({
-        // cards: await fetchFunction(),
+      this.setState((prevState) => ({
+        ...prevState,
         isLoading: true,
         isWrongInputSearch: false,
         query: storageGetQuery() || '',
-      });
+      }));
       const result = query ? await searchPosts(query) : await getPosts();
-      this.cards = result.posts;
-      this.postsCount = result.postsCount;
+      this.setState((prevState) => ({
+        ...prevState,
+        cards: result.posts,
+        postsCount: result.postsCount,
+      }));
     } catch (e) {
       const error = e as Error;
-      // this.setState({ ...this.state, error: error.message });
-      this.errorMessage = error.message;
+      this.setState((prevState) => ({ ...prevState, error: error.message }));
     } finally {
-      this.setState({ ...this.state, isLoading: false });
+      this.setState((prevState) => ({ ...prevState, isLoading: false }));
     }
   }
 
   setQuery(query: string) {
     storageSetQuery(query);
 
-    this.setState({ ...this.state, query: query });
+    this.setState((prevState) => ({ ...prevState, query: query }));
   }
 
   isSearchWrong() {
@@ -79,13 +76,13 @@ class App extends Component {
             isWrangInput={this.state.isWrongInputSearch}
           />
 
-          {this.errorMessage ? <h4>Error loading: {this.errorMessage}</h4> : ''}
-          {this.postsCount ? <h4>Results: {this.postsCount}</h4> : ''}
+          {this.state.error ? <h4>Error loading: {this.state.error}</h4> : ''}
+          {this.state.postsCount ? <h4>Results: {this.state.postsCount}</h4> : ''}
 
           {this.state.isLoading ? (
             <Loader />
           ) : (
-            <CardList cards={this.cards} cardListTitle={'Planets List'} />
+            <CardList cards={this.state.cards} cardListTitle={'Planets List'} />
           )}
         </main>
         <FooterStyled />

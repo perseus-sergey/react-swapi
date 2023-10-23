@@ -1,6 +1,6 @@
-import StyledInput from './UI/input/StyledInput';
+import { StyledInput } from './UI/input/StyledInput';
 import classes from './CardFilter.module.css';
-import StyledButton from './UI/button/StyledButton';
+import { StyledButton } from './UI/button/StyledButton';
 import { ChangeEvent } from 'react';
 
 const CardFilter = (props: {

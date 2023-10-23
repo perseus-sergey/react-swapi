@@ -1,9 +1,10 @@
 import { faCheck, faTrashCan, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
 import { ButtonProps } from '../../../types';
 import classes from './StyledButton.module.css';
 
-const StyledButton = ({ buttonType, children, ...props }: ButtonProps) => {
+const StyledBtn = ({ buttonType, children, ...props }: ButtonProps) => {
   let buttonStyle = children ? classes.textButton : classes.iconButton;
   let iconSvg;
 
@@ -33,6 +34,6 @@ const StyledButton = ({ buttonType, children, ...props }: ButtonProps) => {
   );
 };
 
-export default StyledButton;
+export const StyledButton = React.memo(StyledBtn);
 
 // https://stackoverflow.com/questions/40731352/extending-html-elements-in-react-and-typescript-while-preserving-props?answertab=modifieddesc#tab-top
