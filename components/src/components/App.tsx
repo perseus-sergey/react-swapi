@@ -41,6 +41,12 @@ class App extends Component {
     this.setState((prevState) => ({ ...prevState, error: 'Fake Error!!!' }));
   };
 
+  setQuery = (query: string) => {
+    storageSetQuery(query);
+
+    this.setState((prevState) => ({ ...prevState, query: query }));
+  };
+
   async fetchPosts(query = '') {
     try {
       this.setState((prevState) => ({
@@ -62,42 +68,35 @@ class App extends Component {
     }
   }
 
-  setQuery(query: string) {
-    storageSetQuery(query);
-
-    this.setState((prevState) => ({ ...prevState, query: query }));
-  }
-
   isSearchWrong() {
-    return this.state.query.length < SEARCH_MIN_LENGTH;
+    const { length } = this.state.query.trim();
+    return length !== 0 && length < SEARCH_MIN_LENGTH;
   }
 
   render() {
     return (
-      <>
-        <ErrorBoundary FallbackComponent={ErrorFallback}>
-          <HeaderStyled />
-          <main>
-            <CardFilter
-              query={this.state.query}
-              setQuery={this.setQuery.bind(this)}
-              submitSearch={this.submitSearch}
-              isWrangInput={this.state.isWrongInputSearch}
-            />
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <HeaderStyled />
+        <main>
+          <CardFilter
+            query={this.state.query}
+            setQuery={this.setQuery}
+            submitSearch={this.submitSearch}
+            isWrangInput={this.state.isWrongInputSearch}
+          />
 
-            {this.state.error ? <h4>Something went wrong: {this.state.error}</h4> : ''}
-            {this.state.postsCount ? <h4>Results: {this.state.postsCount}</h4> : ''}
-            <ErrorButton />
+          {this.state.error ? <h4>Something went wrong: {this.state.error}</h4> : ''}
+          {this.state.postsCount ? <h4>Results: {this.state.postsCount}</h4> : ''}
+          <ErrorButton />
 
-            {this.state.isLoading ? (
-              <Loader />
-            ) : (
-              <CardList cards={this.state.cards} cardListTitle={'Planets List'} />
-            )}
-          </main>
-          <FooterStyled />
-        </ErrorBoundary>
-      </>
+          {this.state.isLoading ? (
+            <Loader />
+          ) : (
+            <CardList cards={this.state.cards} cardListTitle={'Planets List'} />
+          )}
+        </main>
+        <FooterStyled />
+      </ErrorBoundary>
     );
   }
 }

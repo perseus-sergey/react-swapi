@@ -18,9 +18,11 @@ export const getPosts = async (url = BASE_URL): Promise<IGetPosts> => {
 };
 
 export const searchPosts = async (value: string): Promise<IGetPosts> => {
-  if (!value) return getPosts();
+  const searchValue = value.trim();
 
-  const response = await axios.get(`${BASE_URL}/?search=${value}`);
+  if (!searchValue) return getPosts();
+
+  const response = await axios.get(`${BASE_URL}/?search=${searchValue}`);
   return {
     posts: response.data.results,
     postsCount: response.data.count,

@@ -1,7 +1,7 @@
 import { StyledInput } from './UI/input/StyledInput';
 import classes from './CardFilter.module.css';
 import { StyledButton } from './UI/button/StyledButton';
-import { ChangeEvent } from 'react';
+import React, { ChangeEvent } from 'react';
 
 const CardFilter = (props: {
   query: string;
@@ -45,4 +45,4 @@ const CardFilter = (props: {
   );
 };
 
-export default CardFilter;
+export default React.memo(CardFilter);
