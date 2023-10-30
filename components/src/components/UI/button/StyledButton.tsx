@@ -36,4 +36,4 @@ const StyledBtn = ({ buttonType, children, ...props }: ButtonProps) => {
 
 export const StyledButton = React.memo(StyledBtn);
 
-// https://stackoverflow.com/questions/40731352/extending-html-elements-in-react-and-typescript-while-preserving-props?answertab=modifieddesc#tab-top
+// https://stackoverflow.com/questions/40731352/extending-html-elements-in-react-and-typescript-while-preserving-props?answertab=scoredesc#tab-top

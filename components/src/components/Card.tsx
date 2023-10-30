@@ -1,18 +1,14 @@
-import { Component } from 'react';
+import { PureComponent } from 'react';
 import { bigNumberCommaSeparate } from '../commons/utils';
 import { ICardData } from '../types';
 import './Card.css';
 
-class Card extends Component {
-  constructor(
-    public props: {
-      cardData: ICardData;
-      index: number;
-    }
-  ) {
-    super(props);
-  }
+type Props = {
+  cardData: ICardData;
+  index: number;
+};
 
+class Card extends PureComponent<Props> {
   render() {
     const { cardData, index } = this.props;
     const {

@@ -1,4 +1,4 @@
-import { Component, MouseEventHandler } from 'react';
+import { Component } from 'react';
 import { getPosts, searchPosts } from '../API/PostService';
 import { CARD_DRAFT, SEARCH_MIN_LENGTH } from '../commons/constants';
 import { storageGetQuery, storageSetQuery } from '../commons/utils';
@@ -10,7 +10,7 @@ import HeaderStyled from './HeaderStyled';
 import { Loader } from './UI/loader/Loader';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorButton from './ErrorButton';
-import { StyledButton } from './UI/button/StyledButton';
+import ErrorFallback from './ErrorFallback';
 
 class App extends Component {
   state = {
@@ -21,8 +21,6 @@ class App extends Component {
     error: '',
     isLoading: false,
   };
-
-  fallback = (<div>Oh no! Something went wrong</div>);
 
   componentDidMount() {
     this.fetchPosts();
@@ -99,24 +97,6 @@ class App extends Component {
       </ErrorBoundary>
     );
   }
-}
-
-function ErrorFallback({
-  error,
-  resetErrorBoundary,
-}: {
-  error: Error;
-  resetErrorBoundary: MouseEventHandler<HTMLButtonElement>;
-}) {
-  return (
-    <div role="alert">
-      <p>Something went wrong:</p>
-      <pre>{error.message}</pre>
-      <StyledButton style={{ margin: '0 auto' }} buttonType="cancel" onClick={resetErrorBoundary}>
-        Return
-      </StyledButton>
-    </div>
-  );
 }
 
 export default App;
