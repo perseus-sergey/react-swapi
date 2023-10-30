@@ -3,17 +3,18 @@ import classes from './CardFilter.module.css';
 import { StyledButton } from './UI/button/StyledButton';
 import React, { ChangeEvent } from 'react';
 
-const CardFilter = (props: {
+type Props = {
   query: string;
   setQuery: (filter: string) => void;
   submitSearch: () => void;
   isWrangInput: boolean;
-}) => {
+};
+
+const CardFilter = (props: Props) => {
   const { query, setQuery, submitSearch, isWrangInput } = props;
 
   const cleanSearch = (e: React.MouseEvent) => {
     e.preventDefault();
-
     setQuery('');
   };
 

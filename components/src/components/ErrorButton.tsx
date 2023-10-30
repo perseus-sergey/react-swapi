@@ -21,4 +21,4 @@ class ErrorButton extends PureComponent {
   }
 }
 
-export default ErrorButton;
+export default React.memo(ErrorButton);

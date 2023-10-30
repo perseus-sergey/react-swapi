@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import React, { PureComponent } from 'react';
 import { bigNumberCommaSeparate } from '../commons/utils';
 import { ICardData } from '../types';
 import './Card.css';
@@ -65,4 +65,4 @@ class Card extends PureComponent<Props> {
   }
 }
 
-export default Card;
+export default React.memo(Card);

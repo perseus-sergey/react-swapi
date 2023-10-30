@@ -1,17 +1,13 @@
 import { ICardData } from '../types';
-import { Component } from 'react';
+import React, { PureComponent } from 'react';
 import Card from './Card';
 
-class CardList extends Component {
-  constructor(
-    public props: {
-      cards: ICardData[];
-      cardListTitle: string;
-    }
-  ) {
-    super(props.cards);
-  }
+type Props = {
+  cards: ICardData[];
+  cardListTitle: string;
+};
 
+class CardList extends PureComponent<Props> {
   render() {
     const { cards, cardListTitle } = this.props;
     return cards && cards.length && cards[0].name ? (
@@ -31,4 +27,4 @@ class CardList extends Component {
   }
 }
 
-export default CardList;
+export default React.memo(CardList);
