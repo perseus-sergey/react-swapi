@@ -1,14 +1,14 @@
 export const SEARCH_MIN_LENGTH = 2;
 
+export const BASE_URL = 'https://swapi.dev/api/planets';
+
 export const constantsLinks = {
-  SWU_IMG_PATH: './assets/images/ukraine_stand.png',
   CV_LINK: 'https://perseus-sergey.github.io/My-cv/',
   GIT_LINK: 'https://github.com/perseus-sergey',
   RSS_LINK: 'https://rs.school/',
-  RSS_IMG_PATH: './assets/images/rs-school.png',
 };
 export const constantsTexts = {
-  LOGO_TEXT: 'Components',
+  LOGO_TEXT: 'Star Wars App',
   SWU_IMG_ALT: 'Stand With Ukraine',
   RSS_IMG_ALT: 'Rss School reference',
   COPYRIGHT_TEXT: 'Created 2023',

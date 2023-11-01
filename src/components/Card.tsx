@@ -10,7 +10,7 @@ type Props = {
 
 class Card extends PureComponent<Props> {
   render() {
-    const { cardData, index } = this.prop;
+    const { cardData, index } = this.props;
     const {
       name,
       rotation_period,
