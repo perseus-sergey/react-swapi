@@ -12,7 +12,7 @@
     "format": "prettier --write \"src/**/*.{ts,tsx,css}\"",
     "preview": "vite preview",
     "precommit": "lint-staged",
-    "prepare": "husky install"
+    "prepare": "cd .. && husky install front/.husky"
   },
   "lint-staged": {
     "./src/**/*.{tsx, ts, js, jsx, html, css}": "prettier --write",
