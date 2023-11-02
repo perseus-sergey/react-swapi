@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { getPosts, searchPosts } from '../API/PostService';
 import { CARD_DRAFT, SEARCH_MIN_LENGTH } from '../commons/constants';
 import { storageGetQuery, storageSetQuery } from '../commons/utils';
@@ -11,92 +11,80 @@ import { Loader } from './UI/loader/Loader';
 import { ErrorBoundary } from 'react-error-boundary';
 import ErrorButton from './ErrorButton';
 import ErrorFallback from './ErrorFallback';
+import { Outlet } from 'react-router-dom';
 
-class App extends Component {
-  state = {
-    query: '',
-    cards: [CARD_DRAFT],
-    postsCount: 0,
-    isWrongInputSearch: false,
-    error: '',
-    isLoading: false,
-  };
+const App = () => {
+  const [query, setQuery] = useState('');
+  const [cards, setCards] = useState([CARD_DRAFT]);
+  const [postsCount, setPostsCount] = useState(0);
+  const [isWrongInputSearch, setIsWrongInputSearch] = useState(false);
+  const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  componentDidMount() {
-    this.fetchPosts();
-  }
+  const fetchPosts = useCallback(async (value = '') => {
+    try {
+      setIsLoading(true);
+      setIsWrongInputSearch(false);
+      setQuery(storageGetQuery() || '');
 
-  submitSearch = async () => {
-    if (this.isSearchWrong()) {
-      this.setState((prevState) => ({ ...prevState, isWrongInputSearch: true }));
+      const result = value ? await searchPosts(value) : await getPosts();
+      setCards(result.posts);
+      setPostsCount(result.postsCount);
+    } catch (error) {
+      setError((error as Error).message);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  const submitSearch = async () => {
+    if (isSearchWrong()) {
+      setIsWrongInputSearch(true);
       return;
     }
-
-    this.fetchPosts(this.state.query);
+    fetchPosts(query);
   };
 
-  throwErrorBtnHandler = () => {
-    this.setState((prevState) => ({ ...prevState, error: 'Fake Error!!!' }));
-  };
-
-  setQuery = (query: string) => {
+  const setQueryToStorage = (query: string) => {
     storageSetQuery(query);
 
-    this.setState((prevState) => ({ ...prevState, query: query }));
+    setQuery(query);
   };
 
-  async fetchPosts(query = '') {
-    try {
-      this.setState((prevState) => ({
-        ...prevState,
-        isLoading: true,
-        isWrongInputSearch: false,
-        query: storageGetQuery() || '',
-      }));
-      const result = query ? await searchPosts(query) : await getPosts();
-      this.setState((prevState) => ({
-        ...prevState,
-        cards: result.posts,
-        postsCount: result.postsCount,
-      }));
-    } catch (error) {
-      this.setState((prevState) => ({ ...prevState, error: (error as Error).message }));
-    } finally {
-      this.setState((prevState) => ({ ...prevState, isLoading: false }));
-    }
-  }
-
-  isSearchWrong() {
-    const { length } = this.state.query.trim();
+  const isSearchWrong = () => {
+    const { length } = query.trim();
     return length !== 0 && length < SEARCH_MIN_LENGTH;
-  }
+  };
 
-  render() {
-    return (
-      <ErrorBoundary FallbackComponent={ErrorFallback}>
-        <HeaderStyled />
-        <main>
+  return (
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <HeaderStyled />
+      <div className="window">
+        <main className="main">
           <CardFilter
-            query={this.state.query}
-            setQuery={this.setQuery}
-            submitSearch={this.submitSearch}
-            isWrangInput={this.state.isWrongInputSearch}
+            query={query}
+            setQuery={setQueryToStorage}
+            submitSearch={submitSearch}
+            isWrangInput={isWrongInputSearch}
           />
 
-          {this.state.error ? <h4>Something went wrong: {this.state.error}</h4> : ''}
-          {this.state.postsCount ? <h4>Results: {this.state.postsCount}</h4> : ''}
+          {error ? <h4>Something went wrong: {error}</h4> : ''}
+          {postsCount ? <h4>Results: {postsCount}</h4> : ''}
           <ErrorButton />
 
-          {this.state.isLoading ? (
-            <Loader />
-          ) : (
-            <CardList cards={this.state.cards} cardListTitle={'Planets List'} />
-          )}
+          {isLoading ? <Loader /> : <CardList cards={cards} cardListTitle={'Planets List'} />}
         </main>
-        <FooterStyled />
-      </ErrorBoundary>
-    );
-  }
-}
+        <section className="card-detail">
+          <Outlet></Outlet>
+        </section>
+      </div>
+      <FooterStyled />
+    </ErrorBoundary>
+  );
+};
 
-export default App;
+export default React.memo(App);

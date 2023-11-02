@@ -7,6 +7,7 @@ export interface ICardData {
   rotation_period: string;
   orbital_period: string;
   terrain: string;
+  url?: string;
 }
 
 export interface IGetPosts {
@@ -27,3 +28,4 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement> & {
 };
 
 export type ButtonType = 'delete' | 'submit' | 'cancel';
+export type CardMode = 'big' | 'small';

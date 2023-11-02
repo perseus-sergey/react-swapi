@@ -1,4 +1,5 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { bigNumberCommaSeparate } from '../commons/utils';
 import { ICardData } from '../types';
 import './Card.css';
@@ -8,61 +9,74 @@ type Props = {
   index: number;
 };
 
-class Card extends PureComponent<Props> {
-  render() {
-    const { cardData, index } = this.props;
-    const {
-      name,
-      rotation_period,
-      diameter,
-      gravity,
-      population,
-      orbital_period,
-      terrain,
-      climate,
-    } = cardData;
+const Card = (props: Props) => {
+  const { cardData, index } = props;
+  const {
+    name,
+    rotation_period,
+    diameter,
+    gravity,
+    population,
+    orbital_period,
+    terrain,
+    climate,
+    url,
+  } = cardData;
+  const getPlanetId = (url: string | undefined) => {
+    if (!url) return null;
+    const urlArr = url.split('/');
+    return urlArr[urlArr.length - 2];
+  };
 
-    return (
-      <div className="card">
-        <div className="title-block">
-          <h2 className="card-title">
+  const navigate = useNavigate();
+
+  const cardClickHandler = () => navigate(`planets/${getPlanetId(url)}`);
+
+  return (
+    <>
+      <div onClick={cardClickHandler} className="card">
+        <div className="titleBlock">
+          <h2 className="cardTitle">
             {index}. {name}
           </h2>
           <div className="planet"></div>
         </div>
-        <div className="card-description">
-          <div className="card-description-item">
+        <div className="cardDescription">
+          <div className="cardDescriptionItem">
             <span>Diameter:</span>
             {bigNumberCommaSeparate(diameter)} km
           </div>
-          <div className="card-description-item">
+          <div className="cardDescriptionItem">
             <span>Population:</span>
             {bigNumberCommaSeparate(population)}
           </div>
-          <div className="card-description-item">
+          <div className="cardDescriptionItem">
             <span>Climate:</span>
             {bigNumberCommaSeparate(climate)}
           </div>
-          <div className="card-description-item">
+          <div className="cardDescriptionItem">
             <span>Rotate period:</span>
             {rotation_period} h
           </div>
-          <div className="card-description-item">
+          <div className="cardDescriptionItem">
             <span>Orbital period:</span>
             {orbital_period} d
           </div>
-          <div className="card-description-item">
+          <div className="cardDescriptionItem">
             <span>Terrain:</span>
             {terrain}
           </div>
-          <div className="card-description-item">
+          <div className="cardDescriptionItem">
             <span>Gravity:</span>
             {gravity}
           </div>
         </div>
+        <NavLink aria-label="Show details" to={`planets/${getPlanetId(url)}`}>
+          Details
+        </NavLink>
       </div>
-    );
-  }
-}
+    </>
+  );
+};
 
 export default React.memo(Card);

@@ -1,3 +1,7 @@
+#searchForm {
+  width: 80%;
+}
+
 .postFormFieldset {
   display: flex;
   flex-direction: column;
@@ -10,7 +14,7 @@
   border: 1px solid darkgray;
   border-radius: 0.5rem;
   flex-wrap: wrap;
-  width: fit-content;
+  width: 100%;
   background: linear-gradient(to bottom, #0a000e, transparent);
 }
 
@@ -22,6 +26,7 @@
 
 .searchBlock {
   position: relative;
+  width: 100%;
 }
 
 .searchBlock button {
