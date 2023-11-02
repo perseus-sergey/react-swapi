@@ -2,15 +2,17 @@ import { IApiResponse, ICardData } from '../types';
 import React from 'react';
 import Card from './Card';
 import './CardList.css';
+import { CARD_PER_PAGE } from '../commons/constants';
 
 type Props = {
   apiResponse: IApiResponse | undefined;
   cardListTitle: string;
   paginationCallback: (url: string) => void;
+  currentApiPageNumber: number;
 };
 
 const CardList = (props: Props) => {
-  const { apiResponse, cardListTitle, paginationCallback } = props;
+  const { apiResponse, cardListTitle, paginationCallback, currentApiPageNumber } = props;
 
   const emptyResultView = (
     <>
@@ -18,7 +20,6 @@ const CardList = (props: Props) => {
     </>
   );
   if (!apiResponse) return emptyResultView;
-
   const { count, results, previous, next } = apiResponse;
 
   const getPaginationPage = (url = '') => {
@@ -31,7 +32,7 @@ const CardList = (props: Props) => {
         <button
           type="button"
           aria-label="Show previous search page"
-          disabled={!!previous}
+          disabled={!previous}
           className={'pagination-btn ' + (previous ? 'active' : '')}
           onClick={previous ? () => getPaginationPage(previous || '') : undefined}
         >
@@ -40,7 +41,7 @@ const CardList = (props: Props) => {
         <button
           type="button"
           aria-label="Show next search page"
-          disabled={!!next}
+          disabled={!next}
           className={'pagination-btn ' + (next ? 'active' : '')}
           onClick={next ? () => getPaginationPage(next || '') : undefined}
         >
@@ -49,7 +50,11 @@ const CardList = (props: Props) => {
       </div>
       <div className="cards-wrapper">
         {results.map((card: ICardData, indx) => (
-          <Card index={indx + 1} key={card.name} cardData={card} />
+          <Card
+            index={indx + (currentApiPageNumber - 1) * CARD_PER_PAGE + 1}
+            key={card.name}
+            cardData={card}
+          />
         ))}
       </div>
     </>

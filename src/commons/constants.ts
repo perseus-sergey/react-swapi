@@ -1,4 +1,5 @@
 export const SEARCH_MIN_LENGTH = 2;
+export const CARD_PER_PAGE = 10;
 
 export const BASE_URL = 'https://swapi.dev/api/planets';
 

@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { getPosts, searchPosts } from '../API/PostService';
 import { SEARCH_MIN_LENGTH } from '../commons/constants';
-import { storageGetQuery, storageSetQuery } from '../commons/utils';
+import { getApiPageNumber, storageGetQuery, storageSetQuery } from '../commons/utils';
 import './App.css';
 import CardFilter from './CardFilter';
 import CardList from './CardList';
@@ -20,8 +20,12 @@ const App = () => {
   const [isWrongInputSearch, setIsWrongInputSearch] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [currentApiPageNumber, setCurrentApiPageNumber] = useState(1);
 
   const fetchPosts = useCallback(async (value = '', paginationUrl?: string) => {
+    const curApiPageNum = paginationUrl ? getApiPageNumber(paginationUrl) : 1;
+    setCurrentApiPageNumber(+curApiPageNum);
+
     try {
       setIsLoading(true);
       setIsWrongInputSearch(false);
@@ -83,6 +87,7 @@ const App = () => {
             <CardList
               paginationCallback={(url: string) => fetchPosts('', url)}
               apiResponse={apiResponse}
+              currentApiPageNumber={currentApiPageNumber}
               cardListTitle={'Planets List'}
             />
           )}
