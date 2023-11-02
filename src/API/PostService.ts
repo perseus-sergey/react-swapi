@@ -1,31 +1,26 @@
-import axios from 'axios';
+import { BASE_URL } from '../commons/constants';
 import { storageGetQuery } from '../commons/utils';
-import { IGetPosts } from '../types';
+import { IApiResponse } from '../types';
 
-const BASE_URL = 'https://swapi.dev/api/planets';
+const fetchData = async (url: string): Promise<IApiResponse> => {
+  const response = await fetch(url);
+  return await response.json();
+};
 
-export const getPosts = async (url = BASE_URL): Promise<IGetPosts> => {
+export const getPosts = async (url = BASE_URL): Promise<IApiResponse> => {
+  if (url !== BASE_URL) return fetchData(url);
+
   const storageQuery = storageGetQuery();
   if (storageQuery) {
     return searchPosts(storageQuery);
   }
-  const response = await axios.get(url);
-  return {
-    posts: response.data.results,
-    postsCount: response.data.count,
-    nextPage: response.data.next,
-  };
+  return fetchData(url);
 };
 
-export const searchPosts = async (value: string): Promise<IGetPosts> => {
+export const searchPosts = async (value: string): Promise<IApiResponse> => {
   const searchValue = value.trim();
 
   if (!searchValue) return getPosts();
 
-  const response = await axios.get(`${BASE_URL}/?search=${searchValue}`);
-  return {
-    posts: response.data.results,
-    postsCount: response.data.count,
-    nextPage: response.data.next,
-  };
+  return fetchData(`${BASE_URL}/?search=${searchValue}`);
 };

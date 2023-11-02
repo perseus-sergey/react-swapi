@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { getPosts, searchPosts } from '../API/PostService';
-import { CARD_DRAFT, SEARCH_MIN_LENGTH } from '../commons/constants';
+import { SEARCH_MIN_LENGTH } from '../commons/constants';
 import { storageGetQuery, storageSetQuery } from '../commons/utils';
 import './App.css';
 import CardFilter from './CardFilter';
@@ -9,27 +9,28 @@ import FooterStyled from './FooterStyled';
 import HeaderStyled from './HeaderStyled';
 import { Loader } from './UI/loader/Loader';
 import { ErrorBoundary } from 'react-error-boundary';
-import ErrorButton from './ErrorButton';
 import ErrorFallback from './ErrorFallback';
 import { Outlet } from 'react-router-dom';
+import { IApiResponse } from '../types';
 
 const App = () => {
   const [query, setQuery] = useState('');
-  const [cards, setCards] = useState([CARD_DRAFT]);
+  const [apiResponse, setApiResponse] = useState<IApiResponse>();
   const [postsCount, setPostsCount] = useState(0);
   const [isWrongInputSearch, setIsWrongInputSearch] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchPosts = useCallback(async (value = '') => {
+  const fetchPosts = useCallback(async (value = '', paginationUrl?: string) => {
     try {
       setIsLoading(true);
       setIsWrongInputSearch(false);
       setQuery(storageGetQuery() || '');
 
-      const result = value ? await searchPosts(value) : await getPosts();
-      setCards(result.posts);
-      setPostsCount(result.postsCount);
+      const result =
+        value && !paginationUrl ? await searchPosts(value) : await getPosts(paginationUrl);
+      setApiResponse(result);
+      setPostsCount(result.count);
     } catch (error) {
       setError((error as Error).message);
     } finally {
@@ -74,9 +75,17 @@ const App = () => {
 
           {error ? <h4>Something went wrong: {error}</h4> : ''}
           {postsCount ? <h4>Results: {postsCount}</h4> : ''}
-          <ErrorButton />
+          {/* <ErrorButton /> */}
 
-          {isLoading ? <Loader /> : <CardList cards={cards} cardListTitle={'Planets List'} />}
+          {isLoading ? (
+            <Loader />
+          ) : (
+            <CardList
+              paginationCallback={(url: string) => fetchPosts('', url)}
+              apiResponse={apiResponse}
+              cardListTitle={'Planets List'}
+            />
+          )}
         </main>
         <section className="card-detail">
           <Outlet></Outlet>

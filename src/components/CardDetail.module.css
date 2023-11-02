@@ -103,7 +103,9 @@
 
 @media (prefers-color-scheme: light) {
   .card {
-    color: #213547;
     background-color: #ffffff;
+  }
+  .cardTitle {
+    color: #213547;
   }
 }

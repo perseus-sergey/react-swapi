@@ -1,3 +1,10 @@
+export interface IApiResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: ICardData[];
+}
+
 export interface ICardData {
   name: string;
   climate: string;

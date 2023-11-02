@@ -1,0 +1,24 @@
+.h1-title {
+  text-align: center;
+}
+
+.pagination {
+  display: flex;
+  gap: 1rem;
+  padding-bottom: 20px;
+}
+
+.pagination-btn {
+  color: #b6b6b6;
+  background: none;
+  border: 1px solid;
+  border-radius: 0.5rem;
+  padding: 0.2rem 1rem;
+  cursor: not-allowed;
+  outline: none !important;
+}
+
+.pagination-btn.active {
+  color: aqua;
+  cursor: pointer;
+}

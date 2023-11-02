@@ -1,27 +1,60 @@
-import { ICardData } from '../types';
+import { IApiResponse, ICardData } from '../types';
 import React from 'react';
 import Card from './Card';
+import './CardList.css';
 
 type Props = {
-  cards: ICardData[];
+  apiResponse: IApiResponse | undefined;
   cardListTitle: string;
+  paginationCallback: (url: string) => void;
 };
 
 const CardList = (props: Props) => {
-  const { cards, cardListTitle } = props;
-  return cards && cards.length && cards[0].name ? (
+  const { apiResponse, cardListTitle, paginationCallback } = props;
+
+  const emptyResultView = (
     <>
-      <h1 style={{ textAlign: 'center' }}>{cardListTitle}</h1>
+      <h1 className="h1-title">Planets not found 👀 🤷</h1>
+    </>
+  );
+  if (!apiResponse) return emptyResultView;
+
+  const { count, results, previous, next } = apiResponse;
+
+  const getPaginationPage = (url = '') => {
+    paginationCallback(url);
+  };
+  return apiResponse && count && results[0].name ? (
+    <>
+      <h1 className="h1-title">{cardListTitle}</h1>
+      <div className="pagination">
+        <button
+          type="button"
+          aria-label="Show previous search page"
+          disabled={!!previous}
+          className={'pagination-btn ' + (previous ? 'active' : '')}
+          onClick={previous ? () => getPaginationPage(previous || '') : undefined}
+        >
+          {'< Previous Page'}
+        </button>
+        <button
+          type="button"
+          aria-label="Show next search page"
+          disabled={!!next}
+          className={'pagination-btn ' + (next ? 'active' : '')}
+          onClick={next ? () => getPaginationPage(next || '') : undefined}
+        >
+          {'Next Page >'}
+        </button>
+      </div>
       <div className="cards-wrapper">
-        {cards.map((card: ICardData, indx) => (
+        {results.map((card: ICardData, indx) => (
           <Card index={indx + 1} key={card.name} cardData={card} />
         ))}
       </div>
     </>
   ) : (
-    <>
-      <h1 style={{ textAlign: 'center' }}>Planets not found 👀 🤷</h1>
-    </>
+    emptyResultView
   );
 };
 
