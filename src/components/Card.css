@@ -82,6 +82,11 @@
   color: rgb(0, 140, 255);
 }
 
+.pending {
+  text-decoration: none;
+  color: rgb(0, 255, 68);
+}
+
 @media (prefers-color-scheme: light) {
   .card {
     color: #213547;

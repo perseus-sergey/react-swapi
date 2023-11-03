@@ -1,9 +1,10 @@
 import { StyledInput } from './UI/input/StyledInput';
 import classes from './CardFilter.module.css';
 import { StyledButton } from './UI/button/StyledButton';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form } from 'react-router-dom';
 import { SEARCH_MIN_LENGTH } from '../commons/constants';
+import ErrorButton from './ErrorButton';
 
 type Props = {
   query: string;
@@ -26,17 +27,13 @@ const CardFilter = (props: Props) => {
     setQuery(inputEl.value);
   };
 
-  const submitSearch = async () => {
-    console.log('🚀 ~ file: App.tsx:28 ~ submitSearch ~ submitSearch:', 'submitSearch');
-    if (isSearchWrong()) {
-      setIsWrongInputSearch(true);
+  const submitSearch = async (e: FormEvent<HTMLFormElement>) => {
+    if (!isSearchWrong()) {
+      setIsWrongInputSearch(false);
       return;
     }
-    // if (!searchParams.get('page'))
-    //   setSearchParams((params) => {
-    //     params.set('page', '1');
-    //   });
-    // fetchPosts(query);
+    setIsWrongInputSearch(true);
+    e.preventDefault();
   };
 
   const isSearchWrong = () => {
@@ -45,34 +42,35 @@ const CardFilter = (props: Props) => {
   };
 
   return (
-    <Form
-      // action="/search"
-      role="search"
-      id={classes.searchForm}
-      name="search-form"
-      onSubmit={submitSearch}
-    >
-      <fieldset className={classes.postFormFieldset}>
-        <legend className={classes.postFormLegend}>Search planet</legend>
+    <>
+      <Form role="search" id={classes.searchForm} name="search-form" onSubmit={submitSearch}>
+        <fieldset className={classes.postFormFieldset}>
+          <legend className={classes.postFormLegend}>Search planet</legend>
 
-        <div className={classes.searchBlock}>
-          <StyledInput
-            id="q"
-            name="q"
-            badMessage="Minimum 2 characters!"
-            isWrang={isWrongInputSearch}
-            value={query}
-            aria-label="Search input"
-            placeholder="Search..."
-            onChange={(e) => inputChanged(e)}
-          />
-          <StyledButton aria-label="Clean search value" buttonType="cancel" onClick={cleanSearch} />
-        </div>
-        <StyledButton aria-label={`Search ${query}`} buttonType="submit" type="submit">
-          Search
-        </StyledButton>
-      </fieldset>
-    </Form>
+          <div className={classes.searchBlock}>
+            <StyledInput
+              id="q"
+              name="q"
+              badMessage="Minimum 2 characters!"
+              isWrang={isWrongInputSearch}
+              value={query}
+              aria-label="Search input"
+              placeholder="Search..."
+              onChange={(e) => inputChanged(e)}
+            />
+            <StyledButton
+              aria-label="Clean search value"
+              buttonType="cancel"
+              onClick={cleanSearch}
+            />
+          </div>
+          <StyledButton aria-label={`Search ${query}`} buttonType="submit" type="submit">
+            Search
+          </StyledButton>
+        </fieldset>
+      </Form>
+      <ErrorButton />
+    </>
   );
 };
 

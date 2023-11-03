@@ -23,15 +23,6 @@ const Card = (props: Props) => {
     url,
   } = cardData;
 
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const planetId = Number(searchParams.get('id')) || 1;
-  // function handlePrev() {
-  //   setSearchParams((params) => {
-  //     params.set('page', `${Math.max(1, page - 1)}`);
-  //     return params;
-  //   });
-  // }
-
   const getPlanetId = (url: string | undefined) => {
     if (!url) return null;
     const urlArr = url.split('/');
@@ -53,6 +44,7 @@ const Card = (props: Props) => {
           </h2>
           <div className="planet"></div>
         </div>
+
         <div className="cardDescription">
           <div className="cardDescriptionItem">
             <span>Diameter:</span>
@@ -83,7 +75,14 @@ const Card = (props: Props) => {
             {gravity}
           </div>
         </div>
-        <NavLink aria-label="Show details" to={toPath}>
+
+        <NavLink
+          aria-label="Show details"
+          to={toPath}
+          className={({ isActive, isPending }) =>
+            isActive ? 'active' : isPending ? 'pending' : ''
+          }
+        >
           Details
         </NavLink>
       </div>
