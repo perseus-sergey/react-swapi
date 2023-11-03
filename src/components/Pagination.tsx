@@ -1,6 +1,6 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { getApiPageNumber } from '../commons/utils';
+import { useSearchParams } from 'react-router-dom';
+// import { getCurrentUrl, getPageNumber } from '../commons/utils';
 
 type Props = {
   previousApiPage: string | null;
@@ -9,12 +9,29 @@ type Props = {
 
 const Pagination = (props: Props) => {
   const { previousApiPage, nextApiPage } = props;
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get('page')) || 1;
 
-  const getPaginationPage = (paginationUrl = '') => {
-    const toPageNumber = paginationUrl ? getApiPageNumber(paginationUrl) : 1;
-    navigate(`/page/${toPageNumber}`);
-  };
+  // const navigate = useNavigate();
+  // const currentUrl = getCurrentUrl(window.location.href);
+  // const getPaginationPage = (paginationUrl = '') => {
+  //   const toPageNumber = paginationUrl ? getPageNumber(paginationUrl, 'remote') : 1;
+  //   console.log('🚀 ~ file: Pagination.tsx:16 ~ getPaginationPage ~ toPageNumber:', toPageNumber);
+  //   navigate(`${currentUrl}/page/${toPageNumber}`);
+  // };
+  function handlePrev() {
+    setSearchParams((params) => {
+      params.set('page', `${Math.max(1, page - 1)}`);
+      return params;
+    });
+  }
+
+  function handleNext() {
+    setSearchParams((params) => {
+      params.set('page', `${page + 1}`);
+      return params;
+    });
+  }
 
   return (
     <div className="pagination">
@@ -23,7 +40,8 @@ const Pagination = (props: Props) => {
         aria-label="Show previousApiPage search page"
         disabled={!previousApiPage}
         className={`pagination-btn ${previousApiPage ? 'active' : ''}`}
-        onClick={previousApiPage ? () => getPaginationPage(previousApiPage || '') : undefined}
+        // onClick={previousApiPage ? () => getPaginationPage(previousApiPage || '') : undefined}
+        onClick={handlePrev}
       >
         {'< Previous Page'}
       </button>
@@ -32,7 +50,7 @@ const Pagination = (props: Props) => {
         aria-label="Show nextApiPage search page"
         disabled={!nextApiPage}
         className={`pagination-btn ${nextApiPage ? 'active' : ''}`}
-        onClick={nextApiPage ? () => getPaginationPage(nextApiPage || '') : undefined}
+        onClick={handleNext}
       >
         {'Next Page >'}
       </button>

@@ -5,7 +5,17 @@ export const storageSetQuery = (value: string) => localStorage.setItem('query', 
 
 export const storageGetQuery = () => localStorage.getItem('query');
 
-export const getApiPageNumber = (url: string): number => {
-  const matches = url.match(/[&\?]page=(\d)+/);
+type UrlDestination = 'local' | 'remote';
+
+export const getPageNumber = (url: string, urlDestination: UrlDestination): number => {
+  const matches = url.match(urlDestination === 'local' ? /\/page\/(\d*)/ : /[&\?]page=(\d)+/);
   return matches && matches.length > 0 ? +matches[1] : 1;
+};
+
+export const getUrlParams = (url: string): string[] | [null] =>
+  url.match(/\?q=([^\/]*)(?:\/page\/(\d*))?/) || [null];
+
+export const getCurrentUrl = (url: string): string | null => {
+  const matches = url.match(/^http.+\/\/.+?(\/[^\/]+)/);
+  return matches && matches.length > 0 ? matches[1] : null;
 };

@@ -30,4 +30,5 @@
 .pagination-btn.active {
   color: aqua;
   cursor: pointer;
+  outline: none;
 }
