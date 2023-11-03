@@ -10,18 +10,22 @@ import './index.css';
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    // path: '/',
     element: <App />,
     errorElement: <ErrorRoutPage />,
     // loader: allPlanetsLoader,
     children: [
       {
-        path: '/page/:pageId',
+        path: '/',
         element: <CardList />,
-        loader: allPlanetsLoader,
+        // loader: allPlanetsLoader,
+        loader: async ({ request }) => {
+          const url = new URL(request.url);
+          return loader(url.searchParams.get('q'), url.searchParams.get('page'));
+        },
         children: [
           {
-            path: 'planets/:planetId',
+            path: ':planetId',
             element: <CardDetail />,
             loader: planetLoader,
           },

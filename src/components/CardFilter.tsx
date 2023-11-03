@@ -46,7 +46,7 @@ const CardFilter = (props: Props) => {
 
   return (
     <Form
-      action="/search"
+      // action="/search"
       role="search"
       id={classes.searchForm}
       name="search-form"

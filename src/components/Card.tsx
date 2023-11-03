@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { bigNumberCommaSeparate } from '../commons/utils';
+import { bigNumberCommaSeparate, getCurrentUrl } from '../commons/utils';
 import { ICardData } from '../types';
 import './Card.css';
 
@@ -22,6 +22,16 @@ const Card = (props: Props) => {
     climate,
     url,
   } = cardData;
+
+  // const [searchParams, setSearchParams] = useSearchParams();
+  // const planetId = Number(searchParams.get('id')) || 1;
+  // function handlePrev() {
+  //   setSearchParams((params) => {
+  //     params.set('page', `${Math.max(1, page - 1)}`);
+  //     return params;
+  //   });
+  // }
+
   const getPlanetId = (url: string | undefined) => {
     if (!url) return null;
     const urlArr = url.split('/');
@@ -30,7 +40,9 @@ const Card = (props: Props) => {
 
   const navigate = useNavigate();
 
-  const cardClickHandler = () => navigate(`planets/${getPlanetId(url)}`);
+  const toPath = `/${getPlanetId(url)}${getCurrentUrl(window.location.href) || ''}`;
+
+  const cardClickHandler = () => navigate(toPath);
 
   return (
     <>
@@ -71,7 +83,7 @@ const Card = (props: Props) => {
             {gravity}
           </div>
         </div>
-        <NavLink aria-label="Show details" to={`planets/${getPlanetId(url)}`}>
+        <NavLink aria-label="Show details" to={toPath}>
           Details
         </NavLink>
       </div>
