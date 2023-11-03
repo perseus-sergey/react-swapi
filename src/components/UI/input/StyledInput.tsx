@@ -11,7 +11,9 @@ const StyledInp = ({ badMessage, isWrang, ...props }: InputProps) => {
 
   return (
     <>
-      <div className={wrongStyles.join(' ')}>{badMessage}</div>
+      <div role="alert" className={wrongStyles.join(' ')}>
+        {badMessage}
+      </div>
       <input className={inputStyles.join(' ')} {...props} />
     </>
   );

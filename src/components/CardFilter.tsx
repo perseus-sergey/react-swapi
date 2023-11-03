@@ -27,12 +27,14 @@ const CardFilter = (props: Props) => {
   };
 
   return (
-    <Form id={classes.searchForm} onSubmit={() => submitSearch()}>
+    <Form role="search" id={classes.searchForm} name="search-form" onSubmit={() => submitSearch()}>
       <fieldset className={classes.postFormFieldset}>
         <legend className={classes.postFormLegend}>Search planet</legend>
 
         <div className={classes.searchBlock}>
           <StyledInput
+            id="q"
+            name="q"
             badMessage="Minimum 2 characters!"
             isWrang={isWrangInput}
             value={query}
