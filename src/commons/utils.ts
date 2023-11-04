@@ -16,6 +16,6 @@ export const getUrlParams = (url: string): string[] | [null] =>
   url.match(/\?q=([^\/]*)(?:\/page\/(\d*))?/) || [null];
 
 export const getCurrentUrl = (url: string): string | null => {
-  const matches = url.match(/^http.+\/\/.+?(\/\?[^\/]+)/);
+  const matches = url.match(/(\/\?[^\/]+)/);
   return matches && matches.length > 0 ? matches[1] : null;
 };

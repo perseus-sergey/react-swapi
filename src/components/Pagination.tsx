@@ -1,6 +1,5 @@
 import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-// import { getCurrentUrl, getPageNumber } from '../commons/utils';
 
 type Props = {
   previousApiPage: string | null;

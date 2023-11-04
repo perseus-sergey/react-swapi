@@ -23,7 +23,7 @@ const Card = (props: Props) => {
     url,
   } = cardData;
 
-  const getPlanetId = (url: string | undefined) => {
+  const getApiPlanetId = (url: string | undefined) => {
     if (!url) return null;
     const urlArr = url.split('/');
     return urlArr[urlArr.length - 2];
@@ -31,7 +31,7 @@ const Card = (props: Props) => {
 
   const navigate = useNavigate();
 
-  const toPath = `/${getPlanetId(url)}${getCurrentUrl(window.location.href) || ''}`;
+  const toPath = `/planet/${getApiPlanetId(url)}${getCurrentUrl(window.location.href) || ''}`;
 
   const cardClickHandler = () => navigate(toPath);
 

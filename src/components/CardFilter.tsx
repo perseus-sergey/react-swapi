@@ -55,7 +55,7 @@ const CardFilter = (props: Props) => {
               isWrang={isWrongInputSearch}
               value={query}
               aria-label="Search input"
-              placeholder="Search..."
+              placeholder="Searchhhh..."
               onChange={(e) => inputChanged(e)}
             />
             <StyledButton
