@@ -14,15 +14,19 @@ const router = createBrowserRouter([
     errorElement: <ErrorRoutPage />,
     children: [
       {
-        path: '/react-swapi?',
-        element: <CardList />,
         errorElement: <ErrorRoutPage />,
-        loader: searchLoader,
         children: [
           {
-            path: 'planet/:planetId',
-            element: <CardDetail />,
-            loader: planetLoader,
+            path: '/react-swapi?',
+            element: <CardList />,
+            loader: searchLoader,
+            children: [
+              {
+                path: 'planet/:planetId',
+                element: <CardDetail />,
+                loader: planetLoader,
+              },
+            ],
           },
         ],
       },
