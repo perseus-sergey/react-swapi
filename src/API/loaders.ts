@@ -1,10 +1,25 @@
 import { Params } from 'react-router-dom';
 import { BASE_URL } from '../commons/constants';
 
-export const planetLoader = async ({ params }: { params: Params<string> }) => {
-  const res = await fetch(`${BASE_URL}/${params.planetId || ''}`);
+type LoaderParams = { params: Params<string> };
+type RequestParams = { request: Request };
+type UrlSearchKey = string | undefined | null;
+
+export const loader = async (search: UrlSearchKey, page: UrlSearchKey, planetId?: UrlSearchKey) => {
+  const urlString = planetId
+    ? `${BASE_URL}/${planetId}`
+    : `${BASE_URL}/?search=${search || ''}&page=${page || 1}`;
+  const res = await fetch(urlString);
   if (res.status === 404) {
     throw new Response('Not Found', { status: 404 });
   }
-  return res.json();
+  const r = res.json();
+  return r;
 };
+
+export const planetLoader = ({ params }: LoaderParams) => loader(null, null, params.planetId || '');
+
+export async function searchLoader({ request }: RequestParams) {
+  const url = new URL(request.url);
+  return loader(url.searchParams.get('q'), url.searchParams.get('page'));
+}

@@ -1,22 +1,30 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { planetLoader } from './API/loaders';
+import { planetLoader, searchLoader } from './API/loaders';
 import App from './components/App';
 import CardDetail from './components/CardDetail';
+import CardList from './components/CardList';
 import { ErrorRoutPage } from './components/ErrorFallback';
 import './index.css';
 
 const router = createBrowserRouter([
   {
-    path: '/',
     element: <App />,
     errorElement: <ErrorRoutPage />,
     children: [
       {
-        path: 'planets/:planetId',
-        element: <CardDetail />,
-        loader: planetLoader,
+        path: '/',
+        element: <CardList />,
+        errorElement: <ErrorRoutPage />,
+        loader: searchLoader,
+        children: [
+          {
+            path: ':planetId',
+            element: <CardDetail />,
+            loader: planetLoader,
+          },
+        ],
       },
     ],
   },
