@@ -2,6 +2,7 @@ import { Params } from 'react-router-dom';
 import { BASE_URL } from '../commons/constants';
 
 type LoaderParams = { params: Params<string> };
+type RequestParams = { request: Request };
 type UrlSearchKey = string | undefined | null;
 
 export const loader = async (search: UrlSearchKey, page: UrlSearchKey, planetId?: UrlSearchKey) => {
@@ -17,3 +18,8 @@ export const loader = async (search: UrlSearchKey, page: UrlSearchKey, planetId?
 };
 
 export const planetLoader = ({ params }: LoaderParams) => loader(null, null, params.planetId || '');
+
+export async function searchLoader({ request }: RequestParams) {
+  const url = new URL(request.url);
+  return loader(url.searchParams.get('q'), url.searchParams.get('page'));
+}

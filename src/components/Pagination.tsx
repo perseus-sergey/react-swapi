@@ -12,26 +12,19 @@ const Pagination = (props: Props) => {
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
 
-  // const navigate = useNavigate();
-  // const currentUrl = getCurrentUrl(window.location.href);
-  // const getPaginationPage = (paginationUrl = '') => {
-  //   const toPageNumber = paginationUrl ? getPageNumber(paginationUrl, 'remote') : 1;
-  //   console.log('🚀 ~ file: Pagination.tsx:16 ~ getPaginationPage ~ toPageNumber:', toPageNumber);
-  //   navigate(`${currentUrl}/page/${toPageNumber}`);
-  // };
-  function handlePrev() {
+  const handlePrev = () => {
     setSearchParams((params) => {
       params.set('page', `${Math.max(1, page - 1)}`);
       return params;
     });
-  }
+  };
 
-  function handleNext() {
+  const handleNext = () => {
     setSearchParams((params) => {
       params.set('page', `${page + 1}`);
       return params;
     });
-  }
+  };
 
   return (
     <div className="pagination">
@@ -40,11 +33,11 @@ const Pagination = (props: Props) => {
         aria-label="Show previousApiPage search page"
         disabled={!previousApiPage}
         className={`pagination-btn ${previousApiPage ? 'active' : ''}`}
-        // onClick={previousApiPage ? () => getPaginationPage(previousApiPage || '') : undefined}
         onClick={handlePrev}
       >
         {'< Previous Page'}
       </button>
+      {page && <span className="page-number">{page}</span>}
       <button
         type="button"
         aria-label="Show nextApiPage search page"

@@ -14,6 +14,7 @@ const CardDetail = () => {
 
   return (
     <>
+      <button className={detailStyle.overlay} onClick={() => navigate(-1)}></button>
       <div className={detailStyle.card}>
         <div className={detailStyle.titleBlock}>
           <h2 className={detailStyle.cardTitle}>{name}</h2>

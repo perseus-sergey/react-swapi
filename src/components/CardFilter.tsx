@@ -61,6 +61,7 @@ const CardFilter = (props: Props) => {
             <StyledButton
               aria-label="Clean search value"
               buttonType="cancel"
+              type="button"
               onClick={cleanSearch}
             />
           </div>

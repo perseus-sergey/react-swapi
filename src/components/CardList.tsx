@@ -29,7 +29,9 @@ const CardList = () => {
       <h1 className="h1-title">Planets List</h1>
       <div className="content">
         <section className="card-list">
-          <Pagination previousApiPage={previous} nextApiPage={next} />
+          {navigation.state === 'idle' && (
+            <Pagination previousApiPage={previous} nextApiPage={next} />
+          )}
 
           {navigation.state === 'loading' && <Loader />}
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { loader, planetLoader } from './API/loaders';
+import { planetLoader, searchLoader } from './API/loaders';
 import App from './components/App';
 import CardDetail from './components/CardDetail';
 import CardList from './components/CardList';
@@ -16,10 +16,8 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <CardList />,
-        loader: async ({ request }) => {
-          const url = new URL(request.url);
-          return loader(url.searchParams.get('q'), url.searchParams.get('page'));
-        },
+        errorElement: <ErrorRoutPage />,
+        loader: searchLoader,
         children: [
           {
             path: ':planetId',
