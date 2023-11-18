@@ -1,11 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
-import searchReducer from './slice/cardFilter';
+import { swApi } from './api';
+// import searchReducer from './slice/searchSlice';
 
 const store = configureStore({
   reducer: {
-    searchReducer,
+    [swApi.reducerPath]: swApi.reducer,
+    // searchReducer,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(swApi.middleware),
 });
 
 type AppDispatch = typeof store.dispatch;
