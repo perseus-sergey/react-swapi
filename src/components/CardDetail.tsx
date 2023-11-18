@@ -1,23 +1,23 @@
 import React from 'react';
-import { useLoaderData, useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { bigNumberCommaSeparate } from '../commons/utils';
-import { ICardData } from '../types';
+import { useGetPlanetQuery } from '../store/api';
 import detailStyle from './CardDetail.module.css';
 import { StyledButton } from './UI/button/StyledButton';
+import { Loader } from './UI/loader/Loader';
 
 const CardDetail = () => {
-  const params = useLoaderData() as ICardData;
-  const { name, rotation_period, diameter, gravity, population, orbital_period, terrain, climate } =
-    params;
+  const { planetId } = useParams();
+  const { data } = useGetPlanetQuery(planetId || 1);
 
   const navigate = useNavigate();
 
-  return (
+  return data ? (
     <>
       <button className={detailStyle.overlay} onClick={() => navigate(-1)}></button>
       <div className={detailStyle.card}>
         <div className={detailStyle.titleBlock}>
-          <h2 className={detailStyle.cardTitle}>{name}</h2>
+          <h2 className={detailStyle.cardTitle}>{data.name}</h2>
           <div className={detailStyle.planet}></div>
           <StyledButton
             type="button"
@@ -30,35 +30,37 @@ const CardDetail = () => {
         <div className={detailStyle.cardDescription}>
           <div className={detailStyle.cardDescriptionItem}>
             <span>Diameter:</span>
-            {bigNumberCommaSeparate(diameter)} km
+            {bigNumberCommaSeparate(data.diameter)} km
           </div>
           <div className={detailStyle.cardDescriptionItem}>
             <span>Population:</span>
-            {bigNumberCommaSeparate(population)}
+            {bigNumberCommaSeparate(data.population)}
           </div>
           <div className={detailStyle.cardDescriptionItem}>
             <span>Climate:</span>
-            {bigNumberCommaSeparate(climate)}
+            {bigNumberCommaSeparate(data.climate)}
           </div>
           <div className={detailStyle.cardDescriptionItem}>
             <span>Rotate period:</span>
-            {rotation_period} h
+            {data.rotation_period} h
           </div>
           <div className={detailStyle.cardDescriptionItem}>
             <span>Orbital period:</span>
-            {orbital_period} d
+            {data.orbital_period} d
           </div>
           <div className={detailStyle.cardDescriptionItem}>
             <span>Terrain:</span>
-            {terrain}
+            {data.terrain}
           </div>
           <div className={detailStyle.cardDescriptionItem}>
             <span>Gravity:</span>
-            {gravity}
+            {data.gravity}
           </div>
         </div>
       </div>
     </>
+  ) : (
+    <Loader />
   );
 };
 

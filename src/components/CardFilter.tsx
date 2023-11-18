@@ -5,20 +5,16 @@ import React, { useState } from 'react';
 import { Form } from 'react-router-dom';
 import { SEARCH_MIN_LENGTH } from '../commons/constants';
 import ErrorButton from './ErrorButton';
-import { useGetAllQuery } from '../store/api';
-// import { useAppDispatch, useAppSelector } from '../store';
-// import { setQuery } from '../store/slice/searchSlice';
+import { useSearchQuery } from '../store/api';
 
 const CardFilter = () => {
   const [isWrongInputSearch, setIsWrongInputSearch] = useState(false);
-  // const query = useAppSelector((state) => state.searchReducer.searchQuery);
-  // const dispatch = useAppDispatch();
-  const { isLoading } = useGetAllQuery('');
-  console.log('🚀 ~ file: CardFilter.tsx:17 ~ CardFilter ~ data:', isLoading);
-
+  // const { data } = useGetAllQuery('');
   const [query, setQuery] = useState('');
+  const { data } = useSearchQuery(query);
 
   const cleanSearch = () => {
+    setQuery('');
     // dispatch(setQuery({ text: '' }));
   };
 
