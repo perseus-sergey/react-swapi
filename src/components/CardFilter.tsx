@@ -5,22 +5,24 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form } from 'react-router-dom';
 import { SEARCH_MIN_LENGTH } from '../commons/constants';
 import ErrorButton from './ErrorButton';
-import { useSearch } from '../providers/SearchProvider';
+import { useAppDispatch, useAppSelector } from '../store';
+import { setQuery } from '../store/slice/cardFilter';
 
 const CardFilter = () => {
   const [isWrongInputSearch, setIsWrongInputSearch] = useState(false);
-  const { query, setQuery } = useSearch();
+  const query = useAppSelector((state) => state.searchReducer.searchQuery);
+  const dispatch = useAppDispatch();
 
   const cleanSearch = (e: React.MouseEvent) => {
     e.preventDefault();
-    setQuery('');
+    dispatch(setQuery({ text: '' }));
   };
 
   const inputChanged = (e: ChangeEvent<HTMLInputElement>) => {
     const inputEl = e.target as HTMLInputElement;
     if (!inputEl) return;
 
-    setQuery(inputEl.value);
+    dispatch(setQuery({ text: inputEl.value }));
   };
 
   const submitSearch = (e: FormEvent<HTMLFormElement>) => {
