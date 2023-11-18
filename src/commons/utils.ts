@@ -12,6 +12,9 @@ export const getPageNumber = (url: string, urlDestination: UrlDestination): numb
   return matches && matches.length > 0 ? +matches[1] : 1;
 };
 
+export const getUrlParam = (paramName: string): string =>
+  new URLSearchParams(window.location.search).get(paramName) || '';
+
 export const getUrlParams = (url: string): string[] | [null] =>
   url.match(/\?q=([^\/]*)(?:\/page\/(\d*))?/) || [null];
 

@@ -19,7 +19,5 @@ export const loader = async (search: UrlSearchKey, page: UrlSearchKey, planetId?
 
 export const planetLoader = ({ params }: LoaderParams) => loader(null, null, params.planetId || '');
 
-export async function searchLoader({ request }: RequestParams) {
-  const url = new URL(request.url);
-  return loader(url.searchParams.get('q'), url.searchParams.get('page'));
-}
+export const searchLoader = async ({ request }: RequestParams, url = new URL(request.url)) =>
+  loader(url.searchParams.get('q'), url.searchParams.get('page'));

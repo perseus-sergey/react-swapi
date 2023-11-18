@@ -5,15 +5,11 @@ import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form } from 'react-router-dom';
 import { SEARCH_MIN_LENGTH } from '../commons/constants';
 import ErrorButton from './ErrorButton';
+import { useSearch } from '../providers/SearchProvider';
 
-type Props = {
-  query: string;
-  setQuery: (filter: string) => void;
-};
-
-const CardFilter = (props: Props) => {
-  const { query, setQuery } = props;
+const CardFilter = () => {
   const [isWrongInputSearch, setIsWrongInputSearch] = useState(false);
+  const { query, setQuery } = useSearch();
 
   const cleanSearch = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -27,7 +23,7 @@ const CardFilter = (props: Props) => {
     setQuery(inputEl.value);
   };
 
-  const submitSearch = async (e: FormEvent<HTMLFormElement>) => {
+  const submitSearch = (e: FormEvent<HTMLFormElement>) => {
     if (!isSearchWrong()) {
       setIsWrongInputSearch(false);
       return;
