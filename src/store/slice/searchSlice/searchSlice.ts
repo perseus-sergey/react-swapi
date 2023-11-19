@@ -18,14 +18,6 @@ export const searchSlice = createSlice({
       state.searchQuery = action.payload.text;
     },
   },
-  // extraReducers: {
-  //   [fetchData.pending]: (state, action) => {
-  //     state.status = 'loading';
-  //     state.error = null;
-  //   },
-  //   [fetchData.fulfilled]: (state, action) => {},
-  //   [fetchData.rejected]: (state, action) => {},
-  // },
 });
 
 export const { setQuery } = searchSlice.actions;

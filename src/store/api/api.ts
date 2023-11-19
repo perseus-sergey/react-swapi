@@ -7,10 +7,9 @@ export const swApi = createApi({
     baseUrl: BASE_URL,
   }),
   endpoints: (builder) => ({
-    getAll: builder.query({ query: () => '/' }),
     getPlanet: builder.query({ query: (planetId) => `${planetId}` }),
-    search: builder.query({ query: (text) => `search=${text}` }),
+    search: builder.query({ query: ({ text = '', page = 1 }) => `/?search=${text}&page=${page}` }),
   }),
 });
 
-export const { useGetAllQuery, useGetPlanetQuery, useSearchQuery } = swApi;
+export const { useGetPlanetQuery, useSearchQuery } = swApi;

@@ -1,34 +1,35 @@
 import { StyledInput } from './UI/input/StyledInput';
 import classes from './CardFilter.module.css';
 import { StyledButton } from './UI/button/StyledButton';
-import React, { useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import { Form } from 'react-router-dom';
 import { SEARCH_MIN_LENGTH } from '../commons/constants';
 import ErrorButton from './ErrorButton';
-import { useSearchQuery } from '../store/api';
+import { getUrlParam } from '../commons/utils';
 
 const CardFilter = () => {
   const [isWrongInputSearch, setIsWrongInputSearch] = useState(false);
-  // const { data } = useGetAllQuery('');
-  const [query, setQuery] = useState('');
-  const { data } = useSearchQuery(query);
+  const [query, setQuery] = useState(getUrlParam('q'));
 
-  const cleanSearch = () => {
+  const cleanSearch = (e: React.MouseEvent) => {
+    e.preventDefault();
     setQuery('');
-    // dispatch(setQuery({ text: '' }));
   };
 
-  const inputChanged = (val: string) => {
-    setQuery(val);
-    // dispatch(setQuery({ text: val }));
+  const inputChanged = (e: ChangeEvent<HTMLInputElement>) => {
+    const inputEl = e.target as HTMLInputElement;
+    if (!inputEl) return;
+
+    setQuery(inputEl.value);
   };
 
-  const submitSearch = () => {
+  const submitSearch = (e: FormEvent<HTMLFormElement>) => {
     if (!isSearchWrong()) {
       setIsWrongInputSearch(false);
       return;
     }
     setIsWrongInputSearch(true);
+    e.preventDefault();
   };
 
   const isSearchWrong = () => {
@@ -51,7 +52,8 @@ const CardFilter = () => {
               value={query}
               aria-label="Search input"
               placeholder="Search..."
-              onChange={(e) => inputChanged(e.target.value)}
+              // defaultValue={q}
+              onChange={(e) => inputChanged(e)}
             />
             <StyledButton
               aria-label="Clean search value"

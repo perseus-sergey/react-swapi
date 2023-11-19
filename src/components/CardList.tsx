@@ -6,13 +6,15 @@ import { CARD_PER_PAGE } from '../commons/constants';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import Pagination from './Pagination';
 import { Loader } from './UI/loader/Loader';
-import { useGetAllQuery } from '../store/api';
+import { useSearchQuery } from '../store/api/api';
+import { getUrlParam } from '../commons/utils';
 
 const CardList = () => {
-  const { isLoading, data } = useGetAllQuery('');
   const [searchParams] = useSearchParams();
 
   const page = Number(searchParams.get('page')) || 1;
+
+  const { isLoading, data } = useSearchQuery({ text: getUrlParam('q'), page });
 
   if (isLoading) return <Loader />;
   return data && data.count && data.results[0].name ? (

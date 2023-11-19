@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { bigNumberCommaSeparate } from '../commons/utils';
-import { useGetPlanetQuery } from '../store/api';
+import { useGetPlanetQuery } from '../store/api/api';
 import detailStyle from './CardDetail.module.css';
 import { StyledButton } from './UI/button/StyledButton';
 import { Loader } from './UI/loader/Loader';
