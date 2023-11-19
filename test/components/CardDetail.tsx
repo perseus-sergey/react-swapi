@@ -4,7 +4,7 @@ import { bigNumberCommaSeparate } from '../../src/commons/utils';
 import { useGetPlanetQuery } from '../../src/store/api/api';
 import detailStyle from './CardDetail.module.css';
 import { StyledButton } from './UI/button/StyledButton.test';
-import { Loader } from './UI/loader/Loader';
+import { Loader } from './UI/loader/Loader.test';
 
 const CardDetail = () => {
   const { planetId } = useParams();

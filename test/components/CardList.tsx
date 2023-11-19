@@ -5,7 +5,7 @@ import './CardList.css';
 import { CARD_PER_PAGE } from '../../src/commons/constants';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import Pagination from './Pagination';
-import { Loader } from './UI/loader/Loader';
+import { Loader } from './UI/loader/Loader.test';
 import { useSearchQuery } from '../../src/store/api/api';
 import { getUrlParam } from '../../src/commons/utils';
 
