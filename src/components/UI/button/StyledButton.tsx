@@ -21,9 +21,6 @@ const StyledBtn = ({ buttonType, children, ...props }: ButtonProps) => {
       buttonStyle += ` ${classes.deleteButton}`;
       iconSvg = <FontAwesomeIcon icon={faTrashCan} />;
       break;
-
-    default:
-      break;
   }
 
   return (
