@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { loader } from '../../../API/loaders';
-import { getUrlParam } from '../../../commons/utils';
+// import { getUrlParam } from '../../../commons/utils';
 
 export const fetchData = createAsyncThunk('search/fethData', async function () {
   return await loader('a', '1');
@@ -9,7 +9,8 @@ export const fetchData = createAsyncThunk('search/fethData', async function () {
 export const searchSlice = createSlice({
   name: 'search',
   initialState: {
-    searchQuery: getUrlParam('q'),
+    searchQuery: '',
+    // searchQuery: getUrlParam('q'),
     status: null,
     error: null,
   },

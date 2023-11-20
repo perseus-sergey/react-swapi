@@ -1,5 +1,5 @@
 import React, { MouseEventHandler } from 'react';
-import { useLocation, useRouteError } from 'react-router-dom';
+import { useRouteError } from 'react-router-dom';
 import { StyledButton } from './UI/button/StyledButton.test';
 
 interface IRoutError {
@@ -31,7 +31,8 @@ const ErrorFallback = ({
 
 export const ErrorRoutPage = React.memo(() => {
   const error = useRouteError() as IRoutError;
-  const location = useLocation();
+  // const location = useLocation();
+  const location = { pathname: 'Wrong Path!' };
   console.error(error);
 
   return (

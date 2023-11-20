@@ -1,12 +1,15 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { StyledInput } from '../../src/components/UI/input/StyledInput';
+import userEvent from '@testing-library/user-event';
 
 describe('StyledInput tests', () => {
   const inputTestId = 'inputTestId';
   const isWrongInputSearch = true;
   const inputVal = '12';
   const onChangeInput = vi.fn();
+  const onHoverInput = vi.fn();
+  const onBlurInput = vi.fn();
   let input: HTMLInputElement;
 
   beforeEach(() => {
@@ -21,6 +24,8 @@ describe('StyledInput tests', () => {
         aria-label="Search input"
         placeholder="Search..."
         onChange={onChangeInput}
+        onMouseEnter={onHoverInput}
+        onMouseLeave={onBlurInput}
       />
     );
     input = screen.getByTestId(inputTestId);
@@ -32,5 +37,11 @@ describe('StyledInput tests', () => {
 
   it('StyledInput use html tag input', () => {
     expect(input.tagName).toBe('INPUT');
+  });
+
+  it('hover event triggers onMouseEnter event', async () => {
+    await userEvent.hover(input);
+    expect(onHoverInput).toBeCalled();
+    expect(onBlurInput).not.toBeCalled();
   });
 });

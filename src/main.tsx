@@ -7,7 +7,7 @@ import CardDetail from './components/CardDetail';
 import CardList from './components/CardList';
 import { ErrorRoutPage } from './components/ErrorFallback';
 import './index.css';
-import store from './store/store';
+import { setupStore } from './store/store';
 
 const router = createBrowserRouter([
   {
@@ -32,6 +32,8 @@ const router = createBrowserRouter([
     ],
   },
 ]);
+
+const store = setupStore();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
