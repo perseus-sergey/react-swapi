@@ -1,29 +1,37 @@
 import { ICardData } from '../types';
-import React from 'react';
 import Card from './Card';
 import './CardList.css';
 import { CARD_PER_PAGE } from '../commons/constants';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import Pagination from './Pagination';
 import { Loader } from './UI/loader/Loader';
-import { useSearchQuery } from '../store/api/api';
-import { getUrlParam } from '../commons/utils';
+import { useSearchEndpointQuery } from '../store/api/api';
+import { useAppSelector } from '../store/store';
 
 const CardList = () => {
   const [searchParams] = useSearchParams();
+  const query = useAppSelector((state) => state.searchReducer.searchQuery);
 
   const page = Number(searchParams.get('page')) || 1;
 
-  const { isLoading, data } = useSearchQuery({ text: getUrlParam('q'), page });
+  const { isLoading, isFetching, error, data } = useSearchEndpointQuery({ text: query, page });
 
   if (isLoading) return <Loader />;
-  return data && data.count && data.results[0].name ? (
+
+  if (error && error instanceof Error) return <h2>Sorry. Something went wrong. {error.message}</h2>;
+
+  if (!data.count || !data.results[0].name)
+    return <h1 className="h1-title">Planets not found 👀 🤷</h1>;
+
+  return (
     <>
       {data && data.count ? <h4>Results: {data.count}</h4> : ''}
       <h1 className="h1-title">Planets List</h1>
       <div className="content">
         <section className="card-list">
           <Pagination previousApiPage={data.previous} nextApiPage={data.next} />
+
+          {(isFetching || isLoading) && <Loader />}
 
           <div className="cards-wrapper">
             {data.results.map((card: ICardData, indx: number) => (
@@ -36,9 +44,7 @@ const CardList = () => {
         </section>
       </div>
     </>
-  ) : (
-    <h1 className="h1-title">Planets not found 👀 🤷</h1>
   );
 };
 
-export default React.memo(CardList);
+export default CardList;

@@ -1,11 +1,13 @@
 import { combineReducers, configureStore, PreloadedState } from '@reduxjs/toolkit';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { swApi } from './api/api';
-import { setQuery } from './slice/searchSlice/searchSlice';
+import searchReducer from './slice/searchSlice';
+import pageNumberReducer from './slice/pageSlice';
 
 const rootReducer = combineReducers({
   [swApi.reducerPath]: swApi.reducer,
-  search: setQuery,
+  searchReducer,
+  pageNumberReducer,
 });
 
 export const setupStore = (preloadedState?: PreloadedState<RootState>) => {

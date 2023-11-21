@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { useSearchParams } from 'react-router-dom';
+import { setQuery } from '../store/slice/pageSlice';
+import { useAppDispatch } from '../store/store';
 
 type Props = {
   previousApiPage: string | null;
@@ -7,20 +9,28 @@ type Props = {
 };
 
 const Pagination = (props: Props) => {
+  const dispatch = useAppDispatch();
+
   const { previousApiPage, nextApiPage } = props;
   const [searchParams, setSearchParams] = useSearchParams();
   const page = Number(searchParams.get('page')) || 1;
 
   const handlePrev = () => {
+    const prevPageNum = Math.max(1, page - 1);
+
+    dispatch(setQuery({ pageNumber: prevPageNum }));
     setSearchParams((params) => {
-      params.set('page', `${Math.max(1, page - 1)}`);
+      params.set('page', `${prevPageNum}`);
       return params;
     });
   };
 
   const handleNext = () => {
+    const nextPageNum = page + 1;
+
+    dispatch(setQuery({ pageNumber: nextPageNum }));
     setSearchParams((params) => {
-      params.set('page', `${page + 1}`);
+      params.set('page', `${nextPageNum}`);
       return params;
     });
   };
@@ -50,4 +60,4 @@ const Pagination = (props: Props) => {
   );
 };
 
-export default Pagination;
+export default memo(Pagination);

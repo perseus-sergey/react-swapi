@@ -1,30 +1,37 @@
-import { StyledInput } from './UI/input/StyledInput';
 import classes from './CardFilter.module.css';
 import { StyledButton } from './UI/button/StyledButton';
-import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { Form } from 'react-router-dom';
+import { FormEvent, memo, useState } from 'react';
+import { Form, useSearchParams } from 'react-router-dom';
 import { SEARCH_MIN_LENGTH } from '../commons/constants';
 import ErrorButton from './ErrorButton';
-import { getUrlParam } from '../commons/utils';
+import { useAppDispatch, useAppSelector } from '../store/store';
+import { searchSlice } from '../store/slice/searchSlice';
+import { pageNumberSlice } from '../store/slice/pageSlice';
+import StyledInput from './UI/input/StyledInput';
 
 const CardFilter = () => {
   const [isWrongInputSearch, setIsWrongInputSearch] = useState(false);
-  const [query, setQuery] = useState(getUrlParam('q'));
+  const [searchParams] = useSearchParams();
+  const [searchValue, setSearchValue] = useState(searchParams.get('q') || '');
+  const query = useAppSelector((state) => state.searchReducer.searchQuery);
+  const { setQuery } = searchSlice.actions;
+  const { setQuery: setPage } = pageNumberSlice.actions;
+  const dispatch = useAppDispatch();
 
-  const cleanSearch = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setQuery('');
+  const cleanSearch = () => {
+    setSearchValue('');
+    dispatch(setPage({ pageNumber: 1 }));
+    setIsWrongInputSearch(false);
   };
 
-  const inputChanged = (e: ChangeEvent<HTMLInputElement>) => {
-    const inputEl = e.target as HTMLInputElement;
-    if (!inputEl) return;
-
-    setQuery(inputEl.value);
+  const inputChanged = (value: string) => {
+    setSearchValue(value);
   };
 
   const submitSearch = (e: FormEvent<HTMLFormElement>) => {
     if (!isSearchWrong()) {
+      dispatch(setQuery({ text: searchValue }));
+      dispatch(setPage({ pageNumber: 1 }));
       setIsWrongInputSearch(false);
       return;
     }
@@ -33,7 +40,7 @@ const CardFilter = () => {
   };
 
   const isSearchWrong = () => {
-    const { length } = query.trim();
+    const { length } = searchValue.trim();
     return length !== 0 && length < SEARCH_MIN_LENGTH;
   };
 
@@ -49,11 +56,10 @@ const CardFilter = () => {
               name="q"
               badMessage="Minimum 2 characters!"
               isWrang={isWrongInputSearch}
-              value={query}
+              value={searchValue}
               aria-label="Search input"
               placeholder="Search..."
-              // defaultValue={q}
-              onChange={(e) => inputChanged(e)}
+              onChange={(e) => inputChanged(e.target.value)}
             />
             <StyledButton
               aria-label="Clean search value"
@@ -72,4 +78,4 @@ const CardFilter = () => {
   );
 };
 
-export default React.memo(CardFilter);
+export default memo(CardFilter);

@@ -9,10 +9,13 @@ import { ErrorRoutPage } from './components/ErrorFallback';
 import './index.css';
 import { setupStore } from './store/store';
 
+export const store = setupStore();
+
 const router = createBrowserRouter([
   {
     element: <App />,
     errorElement: <ErrorRoutPage />,
+    // loader: searchLoader,
     children: [
       {
         errorElement: <ErrorRoutPage />,
@@ -24,6 +27,7 @@ const router = createBrowserRouter([
               {
                 path: 'planet/:planetId',
                 element: <CardDetail />,
+                // loader: planetLoader,
               },
             ],
           },
@@ -32,8 +36,6 @@ const router = createBrowserRouter([
     ],
   },
 ]);
-
-const store = setupStore();
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>

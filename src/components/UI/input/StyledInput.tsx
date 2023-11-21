@@ -1,8 +1,8 @@
-import React from 'react';
+import { memo } from 'react';
 import { InputProps } from '../../../types';
 import classes from './StyledInput.module.css';
 
-const StyledInp = ({ badMessage, isWrang, ...props }: InputProps) => {
+const StyledInput = ({ badMessage, isWrang, ...props }: InputProps) => {
   const wrongStyles = [classes.errorMessage];
   if (isWrang) wrongStyles.push(classes.active);
 
@@ -19,4 +19,4 @@ const StyledInp = ({ badMessage, isWrang, ...props }: InputProps) => {
   );
 };
 
-export const StyledInput = React.memo(StyledInp);
+export default memo(StyledInput);
