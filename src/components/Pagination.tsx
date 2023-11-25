@@ -1,6 +1,6 @@
-import React, { memo } from 'react';
+import React from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { setQuery } from '../store/slice/pageSlice';
+import { pageNumberSlice } from '../store/slice/pageSlice';
 import { useAppDispatch } from '../store/store';
 
 type Props = {
@@ -10,6 +10,7 @@ type Props = {
 
 const Pagination = (props: Props) => {
   const dispatch = useAppDispatch();
+  const { setQuery } = pageNumberSlice.actions;
 
   const { previousApiPage, nextApiPage } = props;
   const [searchParams, setSearchParams] = useSearchParams();
@@ -27,7 +28,6 @@ const Pagination = (props: Props) => {
 
   const handleNext = () => {
     const nextPageNum = page + 1;
-
     dispatch(setQuery({ pageNumber: nextPageNum }));
     setSearchParams((params) => {
       params.set('page', `${nextPageNum}`);
@@ -60,4 +60,4 @@ const Pagination = (props: Props) => {
   );
 };
 
-export default memo(Pagination);
+export default Pagination;

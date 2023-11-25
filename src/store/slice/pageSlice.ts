@@ -9,7 +9,7 @@ export const pageNumberSlice = createSlice({
   },
   reducers: {
     setQuery(state, action) {
-      state.pageNumber = action.payload.number;
+      state.pageNumber = action.payload.pageNumber;
     },
   },
 });

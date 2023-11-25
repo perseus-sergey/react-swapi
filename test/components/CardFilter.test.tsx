@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { StyledInput } from '../../src/components/UI/input/StyledInput';
+import StyledInput from '../../src/components/UI/input/StyledInput';
 import userEvent from '@testing-library/user-event';
 
 describe('StyledInput tests', () => {

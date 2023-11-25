@@ -2,17 +2,17 @@ import { ICardData } from '../types';
 import Card from './Card';
 import './CardList.css';
 import { CARD_PER_PAGE } from '../commons/constants';
-import { Outlet, useSearchParams } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Pagination from './Pagination';
 import { Loader } from './UI/loader/Loader';
 import { useSearchEndpointQuery } from '../store/api/api';
 import { useAppSelector } from '../store/store';
 
 const CardList = () => {
-  const [searchParams] = useSearchParams();
+  // const [searchParams] = useSearchParams();
   const query = useAppSelector((state) => state.searchReducer.searchQuery);
-
-  const page = Number(searchParams.get('page')) || 1;
+  const page = useAppSelector((state) => state.pageNumberReducer.pageNumber) || 1;
+  // const page = Number(searchParams.get('page')) || 1;
 
   const { isLoading, isFetching, error, data } = useSearchEndpointQuery({ text: query, page });
 

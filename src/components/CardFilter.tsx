@@ -68,7 +68,13 @@ const CardFilter = () => {
               onClick={cleanSearch}
             />
           </div>
-          <StyledButton aria-label={`Search ${query}`} buttonType="submit" type="submit">
+          <StyledButton
+            aria-label={`Search ${query}`}
+            buttonType="submit"
+            type="submit"
+            role="submit"
+            name="search"
+          >
             Search
           </StyledButton>
         </fieldset>

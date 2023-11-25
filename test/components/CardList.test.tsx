@@ -1,124 +1,51 @@
-// // import { ICardData } from '../../src/types';
-// // import React from 'react';
-// // import Card from './Card';
-// // import './CardList.css';
-// // import { CARD_PER_PAGE } from '../../src/commons/constants';
-// // import { Outlet, useSearchParams } from 'react-router-dom';
-// // import Pagination from './Pagination';
-// // import { Loader } from './UI/loader/Loader.test';
-// // import { useSearchQuery } from '../../src/store/api/api';
-// // import { getUrlParam } from '../../src/commons/utils';
+import { http, HttpResponse, delay } from 'msw';
+import { setupServer } from 'msw/node';
+import '@testing-library/jest-dom/vitest';
 
-// // const CardList = () => {
-// //   const [searchParams] = useSearchParams();
+import { fireEvent, screen } from '@testing-library/react';
+// We're using our own custom render function and not RTL's render.
+import { renderWithProviders } from '../utils/test-utils';
+import { afterAll, afterEach, beforeAll, expect, test } from 'vitest';
+import CardList from '../../src/components/CardList';
 
-// //   const page = Number(searchParams.get('page')) || 1;
+// We use msw to intercept the network request during the test,
+// and return the response 'John Smith' after 150ms
+// when receiving a get request to the `/api/user` endpoint
+export const handlers = [
+  http.get('/api/user', async () => {
+    await delay(150);
+    return HttpResponse.json('John Smith');
+  }),
+];
 
-// //   const { isLoading, data } = useSearchQuery({ text: getUrlParam('q'), page });
+const server = setupServer(...handlers);
 
-// //   if (isLoading) return <Loader />;
-// //   return data && data.count && data.results[0].name ? (
-// //     <>
-// //       {data && data.count ? <h4>Results: {data.count}</h4> : ''}
-// //       <h1 className="h1-title">Planets List</h1>
-// //       <div className="content">
-// //         <section className="card-list">
-// //           <Pagination previousApiPage={data.previous} nextApiPage={data.next} />
+// Enable API mocking before tests.
+beforeAll(() => server.listen());
 
-// //           <div className="cards-wrapper">
-// //             {data.results.map((card: ICardData, indx: number) => (
-// //               <Card index={indx + 1 + (page - 1) * CARD_PER_PAGE} key={card.name} cardData={card} />
-// //             ))}
-// //           </div>
-// //         </section>
-// //         <section className="card-detail">
-// //           <Outlet />
-// //         </section>
-// //       </div>
-// //     </>
-// //   ) : (
-// //     <h1 className="h1-title">Planets not found 👀 🤷</h1>
-// //   );
-// // };
+// Reset any runtime request handlers we may add during the tests
+afterEach(() => server.resetHandlers());
 
-// // export default React.memo(CardList);
+// Disable API mocking after the tests are done.
+afterAll(() => server.close());
 
-// import React, { useState } from 'react';
-// import { http, HttpResponse, delay } from 'msw';
-// import { setupServer } from 'msw/node';
-// import '@testing-library/jest-dom/vitest';
+test('fetches & receives a user after clicking the fetch user button', async () => {
+  renderWithProviders(<CardList />);
 
-// import { fireEvent, screen } from '@testing-library/react';
-// // We're using our own custom render function and not RTL's render.
-// import { renderWithProviders } from '../utils/test-utils';
-// import { afterAll, afterEach, beforeAll, expect, test, vi } from 'vitest';
-// import CardList from '../../src/components/CardList';
+  const testElem = document.body.querySelector('testElem');
+  // const testElem = document.body.querySelector('testElem');
+  console.log('🚀 ~ file: CardList.test.tsx:36 ~ test ~ testElem:', testElem);
 
-// // We use msw to intercept the network request during the test,
-// // and return the response 'John Smith' after 150ms
-// // when receiving a get request to the `/api/user` endpoint
-// export const handlers = [
-//   http.get('/api/user', async () => {
-//     await delay(150);
-//     return HttpResponse.json('John Smith');
-//   }),
-// ];
+  // should show no user initially, and not be fetching a user
+  expect(screen.getByText(/Search/i)).toBeInTheDocument();
+  expect(screen.queryByText(/Fetching user\.\.\./i)).not.toBeInTheDocument();
 
-// const server = setupServer(...handlers);
+  // after clicking the 'Fetch user' button, it should now show that it is fetching the user
+  fireEvent.click(screen.getByRole('submit', { name: /search/i }));
+  expect(screen.getByText(/throw/i)).toBeInTheDocument();
 
-// // Enable API mocking before tests.
-// beforeAll(() => server.listen());
-
-// // Reset any runtime request handlers we may add during the tests.
-// afterEach(() => server.resetHandlers());
-
-// // Disable API mocking after the tests are done.
-// afterAll(() => server.close());
-
-// test('fetches & receives a user after clicking the fetch user button', async () => {
-//   renderWithProviders(<CardList />);
-
-//   // should show no user initially, and not be fetching a user
-//   expect(screen.getByText(/no user/i)).toBeInTheDocument();
-//   expect(screen.queryByText(/Fetching user\.\.\./i)).not.toBeInTheDocument();
-
-//   // after clicking the 'Fetch user' button, it should now show that it is fetching the user
-//   fireEvent.click(screen.getByRole('button', { name: /Fetch user/i }));
-//   expect(screen.getByText(/no user/i)).toBeInTheDocument();
-
-//   // after some time, the user should be received
-//   expect(await screen.findByText(/John Smith/i)).toBeInTheDocument();
-//   expect(screen.queryByText(/no user/i)).not.toBeInTheDocument();
-//   expect(screen.queryByText(/Fetching user\.\.\./i)).not.toBeInTheDocument();
-// });
-
-// let mockSearchParam = '';
-
-// vi.mock('react-router-dom', () => ({
-//   // ...vi.requireActual('react-router-dom'),
-//   useSearchParams: () => {
-//     const [params, setParams] = useState(new URLSearchParams(mockSearchParam));
-//     return [
-//       params,
-//       (newParams: string) => {
-//         mockSearchParam = newParams;
-//         setParams(new URLSearchParams(newParams));
-//       },
-//     ];
-//   },
-// }));
-
-// const Wrapper = () => {
-//   return (
-//     <MemoryRouter>
-//       <SampleComponent />
-//     </MemoryRouter>
-//   );
-// };
-
-// describe('SampleComponent', () => {
-//   it('should render component successfully', () => {
-//     render(<Wrapper />);
-//     expect(screen.getByTestId('container')).toBeInTheDocument();
-//   });
-// });
+  // after some time, the user should be received
+  expect(await screen.findByText(/John Smith/i)).toBeInTheDocument();
+  expect(screen.queryByText(/throw/i)).not.toBeInTheDocument();
+  expect(screen.queryByText(/Fetching user\.\.\./i)).not.toBeInTheDocument();
+});
