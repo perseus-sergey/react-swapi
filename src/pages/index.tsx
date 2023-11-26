@@ -1,3 +1,7 @@
-export default function Home({}) {
-  return <h1>Main Page</h1>;
-}
+import CardList from '../components/CardList';
+
+const Home = () => {
+  return <CardList />;
+};
+
+export default Home;

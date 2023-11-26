@@ -1,29 +1,27 @@
+import { usePathname } from 'next/navigation';
+import { useRouter } from 'next/router';
 import React from 'react';
-import { useSearchParams } from 'react-router-dom';
-// import { getCurrentUrl, getPageNumber } from '../commons/utils';
 
 type Props = {
   previousApiPage: string | null;
   nextApiPage: string | null;
 };
 
-const Pagination = (props: Props) => {
-  const { previousApiPage, nextApiPage } = props;
-  const [searchParams, setSearchParams] = useSearchParams();
-  const page = Number(searchParams.get('page')) || 1;
+const Pagination = ({ previousApiPage, nextApiPage }: Props) => {
+  const router = useRouter();
+  const urlPath = usePathname();
+
+  const page = Number(router.query.page) || 1;
 
   const handlePrev = () => {
-    setSearchParams((params) => {
-      params.set('page', `${Math.max(1, page - 1)}`);
-      return params;
-    });
+    const url = urlPath.replace(/page=(\d*)/, (_, pageNum) => `page=${Math.max(1, pageNum - 1)}`);
+    router.push(url);
+    `${Math.max(1, page - 1)}`;
   };
 
   const handleNext = () => {
-    setSearchParams((params) => {
-      params.set('page', `${page + 1}`);
-      return params;
-    });
+    const url = urlPath.replace(/page=(\d*)/, (_, pageNum) => `page=${pageNum + 1}`);
+    router.push(url);
   };
 
   return (

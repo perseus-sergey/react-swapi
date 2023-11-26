@@ -1,53 +1,54 @@
-import { IApiResponse, ICardData } from '../types';
+import { ICardData } from '../types';
 import React from 'react';
 import Card from './Card';
-import './CardList.css';
+import style from './CardList.module.css';
 import { CARD_PER_PAGE } from '../commons/constants';
-import { Outlet, useLoaderData, useNavigation, useSearchParams } from 'react-router-dom';
 import Pagination from './Pagination';
 import { Loader } from './UI/loader/Loader';
-
-const emptyResultView = (
-  <>
-    <h1 className="h1-title">Planets not found 👀 🤷</h1>
-  </>
-);
+import { useSearchEndpointQuery } from '../store/planetApi';
+import { useRouter } from 'next/router';
+import { skipToken } from '@reduxjs/toolkit/query';
 
 const CardList = () => {
-  const apiResponse = useLoaderData() as IApiResponse;
-  const [searchParams] = useSearchParams();
-  const navigation = useNavigation();
+  const router = useRouter();
 
-  const page = Number(searchParams.get('page')) || 1;
+  const page = Number(router.query.page) || 1;
+  const query = Number(router.query.q) || '';
 
-  if (!apiResponse) return emptyResultView;
-  const { count, results, previous, next } = apiResponse;
+  const { isLoading, error, data } = useSearchEndpointQuery(
+    typeof query === 'string' ? { text: query, page } : skipToken,
+    { skip: router.isFallback }
+  );
 
-  return apiResponse && count && results[0].name ? (
+  if (router.isFallback || isLoading) return <Loader />;
+
+  if (error && error instanceof Error) return <h2>Sorry. Something went wrong. {error.message}</h2>;
+
+  if (!data) return <h1 className="h1-title">Planets not found 👀 🤷</h1>;
+
+  const { results } = data;
+
+  if (!data.count || !results[0].name) return <h1 className="h1-title">Planets not found 👀 🤷</h1>;
+
+  return (
     <>
-      {count ? <h4>Results: {count}</h4> : ''}
-      <h1 className="h1-title">Planets List</h1>
-      <div className="content">
-        <section className="card-list">
-          {navigation.state === 'idle' && (
-            <Pagination previousApiPage={previous} nextApiPage={next} />
-          )}
+      {data && data.count ? <h4>Results: {data.count}</h4> : ''}
+      <h1 className={style.h1Title}>Planets List</h1>
+      <div className={style.content}>
+        <section className={style.cardList}>
+          <Pagination previousApiPage={data.previous} nextApiPage={data.next} />
 
-          {navigation.state === 'loading' && <Loader />}
+          {/* {navigation.state === 'loading' && <Loader />} */}
 
-          <div className="cards-wrapper">
-            {results.map((card: ICardData, indx) => (
+          <div className={style.cardsWrapper}>
+            {results.map((card: ICardData, indx: number) => (
               <Card index={indx + 1 + (page - 1) * CARD_PER_PAGE} key={card.name} cardData={card} />
             ))}
           </div>
         </section>
-        <section className="card-detail">
-          <Outlet />
-        </section>
+        <section className={style.cardDetail}>{/* <Outlet /> */}</section>
       </div>
     </>
-  ) : (
-    emptyResultView
   );
 };
 

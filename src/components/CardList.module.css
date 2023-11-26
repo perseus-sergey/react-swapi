@@ -2,13 +2,13 @@
   display: flex;
 }
 
-.card-list {
+.cardList {
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.h1-title {
+.h1Title {
   text-align: center;
 }
 
@@ -18,7 +18,7 @@
   padding-bottom: 20px;
 }
 
-.pagination-btn {
+.paginationBtn {
   color: #b6b6b6;
   background: none;
   border: 1px solid;
@@ -27,13 +27,13 @@
   cursor: not-allowed;
 }
 
-.pagination-btn.active {
+.paginationBtn.active {
   color: aqua;
   cursor: pointer;
   outline: none;
 }
 
-.page-number {
+.pageNumber {
   border-radius: 50%;
   border: 2px solid;
   padding: 0.5rem 0.8rem;
