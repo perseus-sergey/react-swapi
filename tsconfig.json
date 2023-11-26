@@ -37,8 +37,9 @@
     "./next-env.d.ts",
     ".eslintrc.cjs",
     "vite.config.ts",
-    ".next/types/**/*.ts"
-  ],
+    ".next/types/**/*.ts",
+     "next.config.mjs"  
+    ],
   "exclude": [
     "./node_modules"
   ]

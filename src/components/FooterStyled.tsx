@@ -1,5 +1,5 @@
 import cl from './FooterStyled.module.css';
-import rssImg from '../assets/images/rs-school.png';
+import rssImg from '../../public/images/rs-school.png';
 import { constantsLinks, constantsTexts } from '../commons/constants';
 import React from 'react';
 
@@ -8,7 +8,7 @@ const { GIT_LINK, RSS_LINK, CV_LINK } = constantsLinks;
 const { RSS_IMG_ALT, COPYRIGHT_TEXT } = constantsTexts;
 
 const FooterStyled = () => (
-  <footer>
+  <footer className={cl.footer}>
     <a href={GIT_LINK} className={cl.gitLink} target="_blank" rel="noreferrer">
       <svg
         aria-hidden="true"
@@ -25,7 +25,7 @@ const FooterStyled = () => (
     </a>
 
     <a href={RSS_LINK} className={cl.rssRef} target="_blank" rel="noreferrer">
-      <img src={rssImg} alt={RSS_IMG_ALT} className={cl.gitRefImg} />
+      <img src={rssImg.src} alt={RSS_IMG_ALT} className={cl.gitRefImg} />
     </a>
     <p className={cl.copyright}>
       <span>{COPYRIGHT_TEXT}</span>

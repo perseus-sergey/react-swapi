@@ -9,18 +9,11 @@ import ErrorFallback from './ErrorFallback';
 import { Outlet } from 'react-router-dom';
 
 const App = () => {
-  const [query, setQuery] = useState(storageGetQuery() || '');
-
-  const setQueryToStorage = (query: string) => {
-    storageSetQuery(query);
-    setQuery(query);
-  };
-
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <HeaderStyled />
       <main className="main">
-        <CardFilter query={query} setQuery={setQueryToStorage} />
+        <CardFilter />
 
         <Outlet />
       </main>

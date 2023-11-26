@@ -6,7 +6,7 @@
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
-  background-image: url('../public/assets/images/black00001.gif');
+  background-image: url('../../public/images/black00001.gif');
   background-repeat: repeat;
   background-attachment: fixed;
 
@@ -72,4 +72,55 @@ input:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+}
+
+#__next {
+  max-width: 1280px;
+  width: 100vw;
+  text-align: center;
+}
+
+/*
+*************************
+Put Footer Down to Page
+*************************
+*/
+html,
+body,
+#__next {
+  height: 100%;
+}
+#__next {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+main {
+  flex: 1 0 auto;
+}
+footer {
+  flex-shrink: 0;
+}
+/* ************************* */
+
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-detail {
+  width: fit-content;
+  height: 100%;
+  padding: 10px;
+}
+
+.cards-wrapper {
+  max-width: 1280px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
 }

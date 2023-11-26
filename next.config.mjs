@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 
-NEXT_PUBLIC_BASE_PATH = './';
+// NEXT_PUBLIC_BASE_PATH = './';
 
 const nextConfig = {
   output: 'export', // Outputs a Single-Page Application (SPA).
