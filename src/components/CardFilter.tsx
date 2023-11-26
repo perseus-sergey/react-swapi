@@ -9,7 +9,7 @@ const CardFilter = () => {
   const route = useRouter();
 
   const submitSearch = async (e: FormEvent<HTMLFormElement>) => {
-    route.push(`/q/${query}`);
+    route.push(`q/${query}`);
     e.preventDefault();
   };
 

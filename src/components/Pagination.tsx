@@ -1,4 +1,3 @@
-import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
 import style from './Pagination.module.css';
 
@@ -9,19 +8,15 @@ type Props = {
 
 const Pagination = ({ previousApiPage, nextApiPage }: Props) => {
   const router = useRouter();
-  const urlPath = usePathname();
 
   const page = Number(router.query.page) || 1;
 
   const handlePrev = () => {
-    const url = urlPath.replace(/page=(\d*)/, (_, pageNum) => `page=${Math.max(1, pageNum - 1)}`);
-    router.push(url);
-    `${Math.max(1, page - 1)}`;
+    router.push(`/page/${Math.max(1, page - 1)}`);
   };
 
   const handleNext = () => {
-    const url = urlPath.replace(/page=(\d*)/, (_, pageNum) => `page=${pageNum + 1}`);
-    router.push(url);
+    router.push(`/page/${page + 1}`);
   };
 
   return (
@@ -30,7 +25,7 @@ const Pagination = ({ previousApiPage, nextApiPage }: Props) => {
         type="button"
         aria-label="Show previousApiPage search page"
         disabled={!previousApiPage}
-        className={`${style.paginationBtn} ${previousApiPage ? 'active' : ''}`}
+        className={`${style.paginationBtn} ${previousApiPage ? style.active : ''}`}
         onClick={handlePrev}
       >
         {'< Previous Page'}
@@ -40,7 +35,7 @@ const Pagination = ({ previousApiPage, nextApiPage }: Props) => {
         type="button"
         aria-label="Show nextApiPage search page"
         disabled={!nextApiPage}
-        className={`${style.paginationBtn} ${nextApiPage ? 'active' : ''}`}
+        className={`${style.paginationBtn} ${nextApiPage ? style.active : ''}`}
         onClick={handleNext}
       >
         {'Next Page >'}

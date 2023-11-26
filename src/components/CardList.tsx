@@ -14,8 +14,6 @@ const CardList = () => {
 
   const page = Number(router.query.page) || 1;
   const query = router.query.query || '';
-  console.log('🚀 ~ file: CardList.tsx:17 ~ CardList ~ query:', query);
-
   const { isLoading, error, data } = useSearchEndpointQuery(
     typeof query === 'string' ? { text: query, page } : skipToken,
     { skip: router.isFallback }
@@ -28,7 +26,6 @@ const CardList = () => {
   if (!data) return <h1 className="h1-title">Planets not found 👀 🤷</h1>;
 
   const { results } = data;
-
   if (!data.count || !results[0].name) return <h1 className="h1-title">Planets not found 👀 🤷</h1>;
 
   return (
