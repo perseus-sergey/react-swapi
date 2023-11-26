@@ -12,11 +12,11 @@ const Pagination = ({ previousApiPage, nextApiPage }: Props) => {
   const page = Number(router.query.page) || 1;
 
   const handlePrev = () => {
-    router.push(`/page/${Math.max(1, page - 1)}`);
+    router.push(`page/${Math.max(1, page - 1)}`);
   };
 
   const handleNext = () => {
-    router.push(`/page/${page + 1}`);
+    router.push(`page/${page + 1}`);
   };
 
   return (

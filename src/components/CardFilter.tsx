@@ -5,11 +5,11 @@ import { FormEvent, useState } from 'react';
 import { useRouter } from 'next/router';
 
 const CardFilter = () => {
-  const [query, setQuery] = useState('');
   const route = useRouter();
+  const [query, setQuery] = useState(route.query.query || '');
 
   const submitSearch = async (e: FormEvent<HTMLFormElement>) => {
-    route.push(`q/${query}`);
+    route.push(query ? `q/${query}` : '/');
     e.preventDefault();
   };
 
