@@ -13,7 +13,7 @@ const CardList = () => {
   const router = useRouter();
 
   const page = Number(router.query.page) || 1;
-  const query = Number(router.query.q) || '';
+  const query = router.query.query;
 
   const { isLoading, error, data } = useSearchEndpointQuery(
     typeof query === 'string' ? { text: query, page } : skipToken,

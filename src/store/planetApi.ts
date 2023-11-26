@@ -25,7 +25,11 @@ export const swApi = createApi({
   }),
 });
 
-export const { useGetPlanetQuery, useSearchEndpointQuery } = swApi;
+export const {
+  useGetPlanetQuery,
+  useSearchEndpointQuery,
+  util: { getRunningQueriesThunk },
+} = swApi;
 export type SearchEndpointQuery = typeof useSearchEndpointQuery;
 
 // export endpoints for use in SSR
