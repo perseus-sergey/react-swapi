@@ -1,0 +1,67 @@
+.iconButton,
+.textButton {
+  display: flex;
+  gap: 0.5rem;
+  color: honeydew;
+  border-radius: 8px;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  background-color: darkgray;
+  align-items: center;
+  justify-content: center;
+}
+.iconButton svg,
+.textButton svg {
+  height: 1.3em;
+}
+
+.iconButton {
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  font-size: 120%;
+}
+
+.deleteButton {
+  background-color: firebrick;
+}
+
+.submitButton {
+  background-color: olivedrab;
+}
+
+.cancelButton {
+  background-color: darkgray;
+}
+
+.submitButton:hover > svg,
+.cancelButton:hover > svg,
+.textButton:hover > svg {
+  animation: rotate-y 0.3s;
+}
+
+@keyframes rotate-y {
+  0% {
+    transform: rotate(0);
+  }
+  100% {
+    transform: rotate(1turn);
+  }
+}
+
+.deleteButton:hover > svg {
+  animation: shake 0.3s;
+}
+
+@keyframes shake {
+  0%,
+  40%,
+  80% {
+    transform: translateX(1px);
+  }
+  20%,
+  60%,
+  100% {
+    transform: translateX(-1px);
+  }
+}
