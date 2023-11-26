@@ -25,7 +25,7 @@ export default function Layout({ children, home }: { children: React.ReactNode; 
         <meta name="twitter:card" content="summary_large_image" />
       </Head>
       <HeaderStyled />
-      <main>
+      <main className="main">
         <CardFilter />
         {children}
         {/* <Outlet /> */}

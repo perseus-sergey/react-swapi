@@ -18,7 +18,11 @@ export const swApi = createApi({
   tagTypes: [],
   endpoints: (builder) => ({
     searchEndpoint: builder.query({
-      query: ({ text = '', page = 1 }) => `/?search=${text}&page=${page}`,
+      query: ({ text = '', page = 1 }) => {
+        console.log('🚀 ~ file: planetApi.ts:22 ~ text:', text);
+
+        return `/?search=${text}&page=${page}`;
+      },
       extraOptions: { maxRetries: 3 },
     }),
     getPlanet: builder.query({ query: (planetId) => `${planetId}` }),

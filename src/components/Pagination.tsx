@@ -1,6 +1,6 @@
 import { usePathname } from 'next/navigation';
 import { useRouter } from 'next/router';
-import React from 'react';
+import style from './Pagination.module.css';
 
 type Props = {
   previousApiPage: string | null;
@@ -25,22 +25,22 @@ const Pagination = ({ previousApiPage, nextApiPage }: Props) => {
   };
 
   return (
-    <div className="pagination">
+    <div className={style.pagination}>
       <button
         type="button"
         aria-label="Show previousApiPage search page"
         disabled={!previousApiPage}
-        className={`pagination-btn ${previousApiPage ? 'active' : ''}`}
+        className={`${style.paginationBtn} ${previousApiPage ? 'active' : ''}`}
         onClick={handlePrev}
       >
         {'< Previous Page'}
       </button>
-      {page && <span className="page-number">{page}</span>}
+      {page && <span className={style.pageNumber}>{page}</span>}
       <button
         type="button"
         aria-label="Show nextApiPage search page"
         disabled={!nextApiPage}
-        className={`pagination-btn ${nextApiPage ? 'active' : ''}`}
+        className={`${style.paginationBtn} ${nextApiPage ? 'active' : ''}`}
         onClick={handleNext}
       >
         {'Next Page >'}
