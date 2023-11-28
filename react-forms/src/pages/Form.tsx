@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import './Form.css';
 import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector } from '../store/store';
+import { useAppDispatch } from '../store/store';
 import { setFormValues } from '../store/slice/formSlice';
 
 export enum GenderType {
@@ -52,7 +52,6 @@ const schema = yup.object().shape({
 const Form: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const res = useAppSelector((state) => state.formSlice.formData);
 
   const {
     register,
@@ -62,7 +61,6 @@ const Form: React.FC = () => {
 
   const onSubmit = (data: IFormInput) => {
     dispatch(setFormValues({ formData: data }));
-    console.log(res);
     navigate('/');
   };
 
