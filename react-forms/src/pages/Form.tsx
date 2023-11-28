@@ -18,7 +18,7 @@ interface IFormInput {
   password: string;
   passwordConfirm: string;
   gender: string;
-  tc?: boolean;
+  tc: boolean;
 }
 
 const schema = yup.object().shape({
@@ -46,6 +46,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('password'), undefined], 'Passwords must match')
     .required('Required'),
   gender: yup.string().required('Selecting the gender field is required'),
+  tc: yup.boolean().default(false).oneOf([true], 'You must accept the terms and conditions'),
 });
 
 const Form: React.FC = () => {
@@ -103,8 +104,9 @@ const Form: React.FC = () => {
         </div>
         {errors.gender && <p>{errors.gender.message}</p>}
       </fieldset>
-      <label htmlFor="tc">T&C</label>
+      <label htmlFor="tc">I agree to the Terms and Conditions</label>
       <input id="tc" type="checkbox" {...register('tc')} />
+      {errors.tc && <p>{errors.tc.message}</p>}
 
       <input type="submit" />
     </form>

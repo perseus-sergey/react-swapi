@@ -2,7 +2,7 @@ import { useAppSelector } from '../store/store';
 import style from './Home.module.css';
 
 const Home = () => {
-  const { name, age, email, gender, tc, password } = useAppSelector(
+  const { name, age, email, gender, password } = useAppSelector(
     (state) => state.formSlice.formData
   );
 
@@ -21,9 +21,6 @@ const Home = () => {
         </li>
         <li>
           <span className={style.formDataTitle}>Gender</span>: {gender}
-        </li>
-        <li>
-          <span className={style.formDataTitle}>T&C</span>: {tc ? 'Yes' : 'No'}
         </li>
         <li>
           <span className={style.formDataTitle}>Password</span>: {password}
