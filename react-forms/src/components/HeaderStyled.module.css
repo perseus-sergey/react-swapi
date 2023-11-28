@@ -1,0 +1,31 @@
+header {
+  padding: 0.2rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2%;
+  margin-bottom: 2rem;
+  box-shadow: 0 1px 11px #0000004d;
+  background: linear-gradient(to bottom, #000000, transparent);
+}
+.swuImg {
+  height: 5.5vh;
+}
+
+.textLogo {
+  color: #ffeb00;
+  text-shadow: 0.1vh 0.3vh 0.3vh rgb(4 140 204);
+  font-size: 4vh;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+@media (orientation: portrait) {
+  .textLogo {
+    font-size: 4vw;
+  }
+
+  .swuImg {
+    height: 5.5vw;
+  }
+}
