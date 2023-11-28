@@ -1,11 +1,17 @@
-import React from 'react';
+import './HeaderNav.css';
 import { NavLink } from 'react-router-dom';
 
 const HeaderNav = () => {
   return (
-    <nav>
-      <NavLink to="/form">Controlled Form</NavLink>;
-      <NavLink to="/form-uncontrolled">Uncontrolled Form</NavLink>;
+    <nav className="header-nav">
+      <NavLink className="nav-link" to="/form">
+        Controlled Form
+      </NavLink>
+      ;
+      <NavLink className="nav-link" to="/form-uncontrolled">
+        Uncontrolled Form
+      </NavLink>
+      ;
     </nav>
   );
 };
