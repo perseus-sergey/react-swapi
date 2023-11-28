@@ -5,6 +5,8 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
 import { ErrorRoutPage } from './components/ErrorFallback';
 import './index.css';
+import Form from './pages/Form';
+import FormRef from './pages/FormRef';
 import Home from './pages/Home';
 
 // export const store = setupStore();
@@ -20,7 +22,14 @@ const router = createBrowserRouter([
           {
             path: '/react-swapi?',
             element: <Home />,
-            // element: <CardList />,
+          },
+          {
+            path: '/form',
+            element: <Form />,
+          },
+          {
+            path: '/form-uncontrolled',
+            element: <FormRef />,
           },
         ],
       },

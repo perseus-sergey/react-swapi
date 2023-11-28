@@ -5,11 +5,13 @@ import ErrorFallback from './components/ErrorFallback';
 import { Outlet } from 'react-router-dom';
 import HeaderStyled from './components/HeaderStyled';
 import FooterStyled from './components/FooterStyled';
+import HeaderNav from './components/HeaderNav';
 
 const App = () => {
   return (
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <HeaderStyled />
+      <HeaderNav />
       <main className="main">
         {/* <CardFilter /> */}
 
